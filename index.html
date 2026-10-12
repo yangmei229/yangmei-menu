@@ -17,12 +17,8 @@ tailwind.config = {
         zcool: ['"ZCOOL KuaiLe"', 'sans-serif']
       },
       colors: {
-        cream: '#FFF7F1',
-        berry: '#E67A7A',
-        peach: '#FFD9C0',
-        lemon: '#FFF4B8',
-        pinkpaper: '#FFEEF2',
-        ink: '#5B4652'
+        cream: '#FFF7F1', berry: '#E67A7A', peach: '#FFD9C0',
+        lemon: '#FFF4B8', pinkpaper: '#FFEEF2', ink: '#5B4652'
       }
     }
   }
@@ -50,51 +46,34 @@ tailwind.config = {
   }
   .notebook::before {
     content: "💕";
-    position: absolute;
-    top: -14px;
-    left: 18px;
-    background: #FFD1E0;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 14px;
-    border: 2px solid #fff;
+    position: absolute; top: -14px; left: 18px;
+    background: #FFD1E0; padding: 4px 10px;
+    border-radius: 12px; font-size: 14px; border: 2px solid #fff;
   }
   .tape-card {
-    position: relative;
-    background: #fffbf6;
-    border: 2px solid #F2C4CE;
-    border-radius: 14px;
+    position: relative; background: #fffbf6;
+    border: 2px solid #F2C4CE; border-radius: 14px;
     box-shadow: 0 6px 14px rgba(230, 122, 122, 0.12);
     padding: 18px;
   }
   .tape {
-    position: absolute;
-    top: -14px;
-    left: 50%;
+    position: absolute; top: -14px; left: 50%;
     transform: translateX(-50%) rotate(-3deg);
-    background: #FFD1E0;
-    color: #fff;
-    padding: 4px 14px;
-    border-radius: 10px;
-    font-size: 13px;
-    letter-spacing: 1px;
-    border: 2px solid #fff;
-    box-shadow: 0 2px 6px rgba(230, 122, 122, 0.25);
+    background: #FFD1E0; color: #fff;
+    padding: 4px 14px; border-radius: 10px;
+    font-size: 13px; letter-spacing: 1px;
+    border: 2px solid #fff; box-shadow: 0 2px 6px rgba(230, 122, 122, 0.25);
   }
   .tape.strawberry { background: #E67A7A; }
   .tape.lemon { background: #F2D166; }
   .tape.peach { background: #FFBFA3; }
   .sticker-tag {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 10px;
-    font-family: 'Ma Shan Zheng', cursive;
-    background: #FFD1E0;
-    color: #fff;
+    display: inline-block; padding: 3px 10px;
+    border-radius: 10px; font-family: 'Ma Shan Zheng', cursive;
+    background: #FFD1E0; color: #fff;
     transform: rotate(-2deg);
     box-shadow: 0 2px 4px rgba(230, 122, 122, 0.25);
-    margin-right: 6px;
-    margin-bottom: 4px;
+    margin-right: 6px; margin-bottom: 4px;
   }
   .sticker-tag.peach { background: #FFBFA3; }
   .sticker-tag.lemon { background: #F2D166; color: #7a5b30; }
@@ -102,110 +81,72 @@ tailwind.config = {
   .heart-title {
     font-family: 'Ma Shan Zheng', cursive;
     background: linear-gradient(90deg, #E67A7A, #FFBFA3);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .btn-cute {
     background: linear-gradient(180deg, #FFD1E0, #FFB6C8);
-    color: #fff;
-    border: 2px solid #fff;
-    border-radius: 999px;
-    padding: 10px 18px;
-    box-shadow: 0 4px 10px rgba(230, 122, 122, 0.3);
+    color: #fff; border: 2px solid #fff; border-radius: 999px;
+    padding: 10px 18px; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.3);
     transition: transform .15s ease;
   }
   .btn-cute:hover { transform: translateY(-2px) scale(1.03); }
   .btn-soft {
-    background: #FFF4B8;
-    color: #7a5b30;
-    border: 2px solid #fff;
-    border-radius: 999px;
-    padding: 8px 14px;
+    background: #FFF4B8; color: #7a5b30; border: 2px solid #fff;
+    border-radius: 999px; padding: 8px 14px;
     box-shadow: 0 3px 8px rgba(242, 209, 102, 0.35);
   }
   .btn-pink {
-    background: #FFB6C8;
-    color: #fff;
-    border: 2px solid #fff;
-    border-radius: 999px;
-    padding: 8px 14px;
+    background: #FFB6C8; color: #fff; border: 2px solid #fff;
+    border-radius: 999px; padding: 8px 14px;
   }
   input, textarea, select {
-    background: #fff;
-    border: 2px dashed #F2C4CE;
-    border-radius: 12px;
-    padding: 10px 12px;
+    background: #fff; border: 2px dashed #F2C4CE;
+    border-radius: 12px; padding: 10px 12px;
     font-family: 'ZCOOL KuaiLe', sans-serif;
-    color: #5B4652;
-    width: 100%;
+    color: #5B4652; width: 100%;
   }
   .recipe-card {
-    background: #fff;
-    border: 2px solid #FFD1E0;
-    border-radius: 16px;
-    padding: 14px;
+    background: #fff; border: 2px solid #FFD1E0;
+    border-radius: 16px; padding: 14px;
     box-shadow: 0 6px 14px rgba(230, 122, 122, 0.12);
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
   }
   .recipe-card::before {
-    content: "♡";
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    color: #FFB6C8;
-    font-size: 22px;
+    content: "♡"; position: absolute; top: 10px; right: 12px;
+    color: #FFB6C8; font-size: 22px;
   }
   .recipe-img {
-    width: 100%;
-    height: 140px;
-    object-fit: cover;
-    border-radius: 12px;
-    border: 3px solid #fff;
+    width: 100%; height: 140px; object-fit: cover;
+    border-radius: 12px; border: 3px solid #fff;
     box-shadow: 0 4px 10px rgba(230, 122, 122, 0.18);
   }
-  .check-item {
-    background: #fff;
-    border: 2px dashed #FFD1E0;
-    border-radius: 12px;
-    padding: 10px 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
   .tab-btn {
-    background: #fff;
-    border: 2px solid #F2C4CE;
-    border-radius: 999px;
-    padding: 8px 14px;
-    color: #5B4652;
+    background: #fff; border: 2px solid #F2C4CE;
+    border-radius: 999px; padding: 8px 14px; color: #5B4652;
   }
   .tab-btn.active {
-    background: #FFD1E0;
-    color: #fff;
-    border-color: #FFB6C8;
+    background: #FFD1E0; color: #fff; border-color: #FFB6C8;
   }
   .hand-border {
-    border: 2px dashed #E6A5B8;
-    border-radius: 16px;
-    background: #FFFAF2;
-    padding: 16px;
+    border: 2px dashed #E6A5B8; border-radius: 16px;
+    background: #FFFAF2; padding: 16px;
   }
   .tip-bubble {
-    background: #FFF4B8;
-    border-radius: 14px;
-    padding: 10px 14px;
-    color: #7a5b30;
-    position: relative;
+    background: #FFF4B8; border-radius: 14px;
+    padding: 10px 14px; color: #7a5b30; position: relative;
   }
   .heart-divider {
-    text-align: center;
-    color: #FFB6C8;
-    font-size: 20px;
-    margin: 14px 0;
-    letter-spacing: 4px;
+    text-align: center; color: #FFB6C8;
+    font-size: 20px; margin: 14px 0; letter-spacing: 4px;
   }
+  .qty-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #FFD1E0; color: #E67A7A; font-weight: bold;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff; box-shadow: 0 2px 6px rgba(230, 122, 122, 0.2);
+    cursor: pointer;
+  }
+  .qty-btn:active { transform: scale(0.95); }
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-thumb { background: #FFB6C8; border-radius: 4px; }
 </style>
@@ -213,28 +154,22 @@ tailwind.config = {
 <body class="min-h-screen p-3 md:p-6">
 <div class="max-w-4xl mx-auto notebook">
   <div class="tape strawberry">杨梅专属手账 ♡</div>
-  <h1 class="text-4xl md:text-5xl text-center heart-title mt-3 mb-2">
-    杨梅的家庭手账菜单
-  </h1>
-  <p class="text-center text-sm mb-4" style="color:#b07890">
-    记录我们爱吃的菜，今天也要一起好好吃饭呀 💕
-  </p>
+  <h1 class="text-4xl md:text-5xl text-center heart-title mt-3 mb-2">杨梅的家庭手账菜单</h1>
+  <p class="text-center text-sm mb-4" style="color:#b07890">记录我们爱吃的菜，今天也要一起好好吃饭呀 💕</p>
+  
   <div class="flex flex-wrap gap-2 justify-center mb-5">
     <button class="tab-btn active" id="tab-library" onclick="switchTab('library')">📖 菜谱库</button>
-    <button class="tab-btn" id="tab-today" onclick="switchTab('today')">🍽️ 今日菜单</button>
+    <button class="tab-btn" id="tab-order" onclick="switchTab('order')">🛒 点餐台</button>
     <button class="tab-btn" id="tab-random" onclick="switchTab('random')">🎲 随机点单</button>
-    <button class="tab-btn" id="tab-share" onclick="switchTab('share')">💌 发给杨梅</button>
   </div>
+
   <!-- 菜谱库 -->
   <div id="page-library" class="page">
     <div class="tape-card mb-5">
       <div class="tape lemon">添加一道杨梅爱吃的菜</div>
       <input type="hidden" id="editId">
       <div class="grid md:grid-cols-2 gap-3 mt-2">
-        <div>
-          <label class="text-sm">菜名 ♡</label>
-          <input id="rname" placeholder="比如：番茄炒蛋">
-        </div>
+        <div><label class="text-sm">菜名 ♡</label><input id="rname" placeholder="比如：番茄炒蛋"></div>
         <div>
           <label class="text-sm">分类</label>
           <select id="rcate">
@@ -252,24 +187,17 @@ tailwind.config = {
             <option value="困难">困难</option>
           </select>
         </div>
-        <div>
-          <label class="text-sm">图片链接</label>
-          <input id="rimg" placeholder="https://...">
-        </div>
+        <div><label class="text-sm">图片链接</label><input id="rimg" placeholder="https://..."></div>
       </div>
-      <div class="mt-3">
-        <label class="text-sm">食材（逗号分隔）</label>
-        <textarea id="ringre" rows="2" placeholder="鸡蛋, 番茄, 盐, 糖"></textarea>
-      </div>
-      <div class="mt-3">
-        <label class="text-sm">做法</label>
-        <textarea id="rstep" rows="3" placeholder="简单写一下步骤就好啦"></textarea>
-      </div>
+      <div class="mt-3"><label class="text-sm">食材（逗号分隔）</label><textarea id="ringre" rows="2" placeholder="鸡蛋, 番茄, 盐, 糖"></textarea></div>
+      <div class="mt-3"><label class="text-sm">做法</label><textarea id="rstep" rows="3" placeholder="简单写一下步骤就好啦"></textarea></div>
       <div class="mt-4 flex flex-wrap gap-2">
         <button class="btn-cute" onclick="saveRecipe()">💾 保存菜谱</button>
         <button class="btn-soft" onclick="clearForm()">🧹 清空表单</button>
       </div>
+      <p id="db-status" class="text-xs mt-2 text-red-400"></p>
     </div>
+    
     <div class="flex flex-wrap gap-2 mb-4">
       <span class="text-sm" style="color:#b07890">分类筛选：</span>
       <button class="sticker-tag" onclick="filterCate('全部')">全部</button>
@@ -280,31 +208,34 @@ tailwind.config = {
     </div>
     <div id="recipeList" class="grid md:grid-cols-2 gap-4"></div>
   </div>
-  <!-- 今日菜单 -->
-  <div id="page-today" class="page hidden">
+
+  <!-- 点餐台 -->
+  <div id="page-order" class="page hidden">
     <div class="tape-card mb-4">
-      <div class="tape peach">勾选今天想吃的菜</div>
-      <div class="tip-bubble mt-3 mb-3 text-sm">
-        🍰 小提示：杨梅喜欢的菜可以多选一点，搭配成完整的一餐哦！
+      <div class="tape peach">🛒 杨梅点餐台</div>
+      <div class="tip-bubble mt-3 mb-3 text-sm">🍰 想吃哪个就点哪个，加上备注，生成订单发给大厨吧！</div>
+      <div id="orderList" class="grid gap-3 max-h-[420px] overflow-y-auto pr-1"></div>
+      <div class="mt-4">
+        <label class="text-sm">给大厨的备注：</label>
+        <input id="orderNote" placeholder="比如：少放辣，多放糖~">
       </div>
-      <div id="checkList" class="grid md:grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pr-1"></div>
       <div class="mt-4 flex flex-wrap gap-2">
-        <button class="btn-cute" onclick="saveTodayMenu()">💖 保存今日菜单</button>
-        <button class="btn-pink" onclick="clearToday()">🗑 重新选择</button>
+        <button class="btn-cute" onclick="generateOrder()">📝 生成点餐单</button>
+        <button class="btn-pink" onclick="clearOrder()">🗑 清空重选</button>
       </div>
     </div>
     <div class="hand-border">
-      <h3 class="text-xl heart-title mb-2">今日菜单记录</h3>
-      <div id="todayShow"></div>
+      <h3 class="text-xl heart-title mb-2">📋 点餐单预览</h3>
+      <div id="orderPreview"><p style="color:#b07890">还没有点菜，去上面选几道吧～</p></div>
+      <button id="copyOrderBtn" class="btn-soft mt-3 hidden" onclick="copyOrderText()">📋 复制点餐单</button>
     </div>
   </div>
+
   <!-- 随机点菜 -->
   <div id="page-random" class="page hidden">
     <div class="tape-card">
       <div class="tape strawberry">今天吃什么？交给幸运签</div>
-      <div class="mt-3 text-sm" style="color:#b07890">
-        杨梅选一个数量，我来帮你随机抽菜啦 ✨
-      </div>
+      <div class="mt-3 text-sm" style="color:#b07890">杨梅选一个数量，我来帮你随机抽菜啦 ✨</div>
       <div class="mt-3 flex flex-wrap items-center gap-2">
         <label>抽取数量：</label>
         <input id="randNum" type="number" value="3" min="1" max="12" style="width:90px">
@@ -313,66 +244,51 @@ tailwind.config = {
       <div id="randResult" class="mt-4"></div>
     </div>
   </div>
-  <!-- 分享菜单 -->
-  <div id="page-share" class="page hidden">
-    <div class="tape-card">
-      <div class="tape lemon">把菜单分享给杨梅</div>
-      <div class="tip-bubble mt-3 text-sm">
-        💌 复制链接发给她，打开就能直接看到你搭配好的整套菜单！
-      </div>
-      <textarea id="shareLink" class="w-full mt-3" rows="4" readonly placeholder="分享链接会在这里生成..."></textarea>
-      <div class="mt-3 flex flex-wrap gap-2">
-        <button class="btn-cute" onclick="copyShare()">📋 复制链接</button>
-        <button class="btn-soft" onclick="buildShareLink()">🔄 重新生成链接</button>
-      </div>
-      <div id="sharePreview" class="mt-4 hand-border"></div>
-    </div>
-  </div>
 </div>
 
 <script>
-// ============你的Supabase配置，无需修改============
-const SUPABASE_URL = "https://walbapquafqibcqdhazq.supabase.co";
+// ============ 你的 Supabase 配置 ============
+// 注意：请确保 URL 末尾没有 /rest/v1/
+const SUPABASE_URL = "https://walbapquafqibcqdhazq.supabase.co"; 
 const SUPABASE_ANON_KEY = "sb_publishable_P3OMyZLQbYGHLrbrOVXEdw_cLD4Livn";
-const { createClient } = supabase;
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-// =================================================
+let supabaseClient = null;
 
-let recipes = [];
-let selectedIds = [];
+try {
+  if (window.supabase && SUPABASE_ANON_KEY.length > 20) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+} catch(e) {
+  console.error("Supabase 初始化失败", e);
+  document.getElementById("db-status").innerText = "⚠️ 云端连接失败，已切换为本地模式（数据保存在浏览器中）";
+}
+// ============================================
+
+let recipes = JSON.parse(localStorage.getItem('yangmei_recipes')) || [];
+let cart = JSON.parse(localStorage.getItem('yangmei_cart')) || {}; 
 let filterCategory = "全部";
 let editDocId = null;
 
-// 页面加载：读取云端数据
 async function loadData() {
-  // 读取菜谱
-  const {data:recipeData, error:recipeErr} = await supabase.from('recipes').select('*').order('id',{ascending:false});
-  if(recipeErr){
-    alert("读取云端菜谱失败，请检查网络与数据库配置");
-    console.error(recipeErr);
-  }else{
-    recipes = recipeData;
-  }
-
-  //解析分享链接参数
-  const url = new URL(location.href);
-  const shareRaw = url.searchParams.get("menu");
-  if(shareRaw){
-    try{
-      selectedIds = JSON.parse(decodeURIComponent(shareRaw));
-      setTimeout(()=>alert("💌 收到一份来自杨梅的菜单邀请，已打开！"),100);
-    }catch(e){}
+  if (supabaseClient) {
+    try {
+      const {data:recipeData, error:recipeErr} = await supabaseClient.from('recipes').select('*').order('id',{ascending:false});
+      if(recipeErr) throw recipeErr;
+      if (recipeData && recipeData.length > 0) {
+        recipes = recipeData;
+        localStorage.setItem('yangmei_recipes', JSON.stringify(recipes));
+      }
+    } catch(e) {
+      console.error("读取云端失败", e);
+      document.getElementById("db-status").innerText = "⚠️ 读取云端失败，已切换为本地模式";
+    }
   }
   renderAll();
 }
 
-//保存菜谱（新增/更新）
 async function saveRecipe(){
   const name = document.getElementById("rname").value.trim();
-  if(!name){
-    alert("菜名不能为空哦，杨梅会问我吃什么哒 😳");
-    return;
-  }
+  if(!name){ alert("菜名不能为空哦 😳"); return; }
+  
   const payload = {
     name: name,
     cate: document.getElementById("rcate").value,
@@ -381,43 +297,36 @@ async function saveRecipe(){
     ingre: document.getElementById("ringre").value,
     step: document.getElementById("rstep").value
   };
-  let res;
-  if(editDocId){
-    res = await supabase.from('recipes').update(payload).eq('id',editDocId);
-  }else{
-    res = await supabase.from('recipes').insert([payload]);
+
+  if (editDocId) {
+    const idx = recipes.findIndex(r => r.id === editDocId);
+    if(idx > -1) recipes[idx] = {...recipes[idx], ...payload};
+  } else {
+    payload.id = Date.now(); 
+    recipes.unshift(payload);
   }
-  if(res.error){
-    alert("保存失败："+res.error.message);
-    return;
+  localStorage.setItem('yangmei_recipes', JSON.stringify(recipes));
+  
+  if (supabaseClient) {
+    try {
+      let res;
+      if(editDocId) {
+        res = await supabaseClient.from('recipes').update(payload).eq('id',editDocId);
+      } else {
+        res = await supabaseClient.from('recipes').insert([payload]);
+      }
+      if(res.error) throw res.error;
+      alert("已成功保存到云端啦 💗");
+    } catch(e) {
+      alert("云端保存失败（已存到本地）：" + e.message);
+    }
+  } else {
+    alert("已保存到本地啦 💗 (若需云端同步请检查Supabase配置)");
   }
+  
   editDocId = null;
   clearForm();
-  await loadData();
-  alert("已保存到杨梅的手账菜单啦 💗");
-}
-
-//编辑回填
-function editRecipe(id){
-  editDocId = id;
-  const r = recipes.find(x=>x.id === id);
-  document.getElementById("rname").value = r.name;
-  document.getElementById("rcate").value = r.cate;
-  document.getElementById("rdiff").value = r.diff;
-  document.getElementById("rimg").value = r.img;
-  document.getElementById("ringre").value = r.ingre;
-  document.getElementById("rstep").value = r.step;
-}
-
-//删除菜谱
-async function delRecipe(id){
-  if(!confirm("确定要把这道菜从杨梅的菜单里删掉吗？")) return;
-  const {error} = await supabase.from('recipes').delete().eq('id',id);
-  if(error){
-    alert("删除失败："+error.message);
-    return;
-  }
-  await loadData();
+  renderAll();
 }
 
 function clearForm(){
@@ -434,11 +343,15 @@ function renderRecipeList(){
   const wrap = document.getElementById("recipeList");
   let list = filterCategory==="全部" ? recipes : recipes.filter(r=>r.cate===filterCategory);
   wrap.innerHTML = "";
+  if(list.length === 0){
+    wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">还没有菜谱，快去添加吧～</p>';
+    return;
+  }
   list.forEach(r=>{
     const div = document.createElement("div");
     div.className = "recipe-card";
     div.innerHTML = `
-      <img class="recipe-img" src="${r.img||''}" onerror="this.style.display='none'">
+      <img class="recipe-img" src="${r.img||'https://via.placeholder.com/300x200/FFD1E0/ffffff?text=美食'}" onerror="this.src='https://via.placeholder.com/300x200/FFD1E0/ffffff?text=美食'">
       <div class="text-xl mt-2 heart-title">${r.name}</div>
       <div class="mt-1">
         <span class="sticker-tag peach">${r.cate}</span>
@@ -455,88 +368,118 @@ function renderRecipeList(){
   });
 }
 
-function filterCate(c){
-  filterCategory = c;
-  renderRecipeList();
-}
+function filterCate(c){ filterCategory = c; renderRecipeList(); }
 
-//切换标签
 function switchTab(name){
   document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
-  document.getElementById("page-"+name).classList.remove("hidden");
+  const targetPage = document.getElementById("page-"+name);
+  if(targetPage) targetPage.classList.remove("hidden");
+  
   document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
-  document.getElementById("tab-"+name).classList.add("active");
-  if(name==="today") renderCheckList();
-  if(name==="share") buildShareLink();
+  const targetTab = document.getElementById("tab-"+name);
+  if(targetTab) targetTab.classList.add("active");
+  
+  if(name==="order") renderOrderList();
+  if(name==="random") document.getElementById("randResult").innerHTML = '';
 }
 
-//今日菜单勾选渲染
-function renderCheckList(){
-  const wrap = document.getElementById("checkList");
+function renderOrderList(){
+  const wrap = document.getElementById("orderList");
   wrap.innerHTML = "";
+  if(recipes.length === 0){
+    wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">菜谱库是空的，先添加菜品吧～</p>';
+    return;
+  }
   recipes.forEach(r=>{
-    const label = document.createElement("label");
-    label.className = "check-item";
-    const checked = selectedIds.includes(r.id) ? "checked" : "";
-    label.innerHTML = `
-      <input type="checkbox" ${checked} onchange="toggleSelect(${r.id})">
-      <span>${r.name}</span>
-      <span class="sticker-tag peach" style="font-size:12px">${r.cate}</span>
-    `;
-    wrap.appendChild(label);
-  });
-  renderTodayShow();
-}
-
-function toggleSelect(id){
-  const idx = selectedIds.indexOf(id);
-  if(idx >=0 ) selectedIds.splice(idx,1);
-  else selectedIds.push(id);
-  renderTodayShow();
-}
-
-//保存今日菜单到云端 upsert更新今日记录
-async function saveTodayMenu(){
-  const todayStr = new Date().toISOString().split('T')[0];
-  const {error} = await supabase.from('daily_menu')
-    .upsert({menu_date:todayStr, selected_ids:selectedIds},{onConflict:"menu_date"});
-  if(error){
-    alert("保存今日菜单失败："+error.message);
-    return;
-  }
-  alert("今日菜单已记录，杨梅看到会开心的 💗");
-}
-
-function clearToday(){
-  selectedIds = [];
-  renderCheckList();
-}
-
-function renderTodayShow(){
-  const wrap = document.getElementById("todayShow");
-  const sel = recipes.filter(r=>selectedIds.includes(r.id));
-  if(!sel.length){
-    wrap.innerHTML = `<p style="color:#b07890">还没有勾选菜品，快去选几道杨梅爱吃的吧～</p>`;
-    return;
-  }
-  let html = `<div class="heart-divider">♡ ♡ ♡</div>`;
-  sel.forEach(r=>{
-    html += `
-      <div class="recipe-card mb-3">
-        <div class="text-lg heart-title">${r.name}</div>
-        <div>
-          <span class="sticker-tag peach">${r.cate}</span>
-          <span class="sticker-tag lemon">难度 ${r.diff}</span>
-        </div>
-        <div class="text-sm mt-1">🥕 ${r.ingre}</div>
+    const qty = cart[r.id] || 0;
+    const div = document.createElement("div");
+    div.className = "check-item";
+    div.style.justifyContent = "space-between";
+    div.innerHTML = `
+      <div>
+        <div style="font-size:1.1rem;">${r.name}</div>
+        <div style="font-size:0.8rem;color:#b07890;">${r.cate} · 难度${r.diff}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        ${qty > 0 ? `<div class="qty-btn" onclick="changeQty(${r.id}, -1)">-</div>` : ''}
+        <span style="font-family:'Ma Shan Zheng';font-size:1.2rem;color:#E67A7A;width:20px;text-align:center;">${qty > 0 ? qty : ''}</span>
+        <div class="qty-btn" onclick="changeQty(${r.id}, 1)">+</div>
       </div>
     `;
+    wrap.appendChild(div);
   });
-  html += `<div class="heart-divider">♡ 今日也要好好吃饭 ♡</div>`;
-  wrap.innerHTML = html;
 }
 
-//随机点菜
+function changeQty(id, delta){
+  if(!cart[id]) cart[id] = 0;
+  cart[id] += delta;
+  if(cart[id] <= 0) delete cart[id];
+  localStorage.setItem('yangmei_cart', JSON.stringify(cart));
+  renderOrderList();
+  renderOrderPreview();
+}
+
+function renderOrderPreview(){
+  const preview = document.getElementById("orderPreview");
+  const copyBtn = document.getElementById("copyOrderBtn");
+  const note = document.getElementById("orderNote").value.trim();
+  const items = Object.keys(cart).map(id => {
+    const r = recipes.find(x => x.id == id);
+    return r ? `${r.name} x${cart[id]}` : null;
+  }).filter(Boolean);
+
+  if(items.length === 0){
+    preview.innerHTML = `<p style="color:#b07890">还没有点菜，去上面选几道吧～</p>`;
+    copyBtn.classList.add('hidden');
+    return;
+  }
+
+  let html = `<div class="text-lg heart-title mb-2">🍽️ 杨梅的点餐单</div>`;
+  items.forEach(item => { html += `<div class="mb-1">♡ ${item}</div>`; });
+  if(note){ html += `<div class="mt-2 text-sm" style="color:#b07890">📝 备注：${note}</div>`; }
+  html += `<div class="text-sm mt-3" style="color:#b07890">大厨，今天就拜托你啦！💕</div>`;
+  
+  preview.innerHTML = html;
+  copyBtn.classList.remove('hidden');
+}
+
+function generateOrder(){
+  renderOrderPreview();
+  document.getElementById("orderPreview").scrollIntoView({behavior:"smooth"});
+}
+
+function clearOrder(){
+  if(!confirm("确定要清空点餐单吗？")) return;
+  cart = {};
+  document.getElementById("orderNote").value = "";
+  localStorage.removeItem('yangmei_cart');
+  renderOrderList();
+  renderOrderPreview();
+}
+
+function copyOrderText(){
+  const note = document.getElementById("orderNote").value.trim();
+  const items = Object.keys(cart).map(id => {
+    const r = recipes.find(x => x.id == id);
+    return r ? `${r.name} x${cart[id]}` : null;
+  }).filter(Boolean);
+
+  let text = `🍽️ 杨梅的点餐单\n\n`;
+  items.forEach((item, i) => { text += `${i+1}. ${item}\n`; });
+  if(note) text += `\n📝 备注：${note}\n`;
+  text += `\n大厨，今天就拜托你啦！💕`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    alert("点餐单已复制！快发给大厨吧 💗");
+  }).catch(() => {
+    const ta = document.createElement("textarea");
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand("copy");
+    document.body.removeChild(ta);
+    alert("点餐单已复制！快发给大厨吧 💗");
+  });
+}
+
 function pickRandom(){
   const num = Number(document.getElementById("randNum").value);
   const wrap = document.getElementById("randResult");
@@ -555,46 +498,19 @@ function pickRandom(){
   wrap.innerHTML = html;
 }
 
-//分享链接
-function buildShareLink(){
-  const data = encodeURIComponent(JSON.stringify(selectedIds));
-  const link = location.origin + location.pathname + "?menu=" + data;
-  document.getElementById("shareLink").value = link;
-  const preview = document.getElementById("sharePreview");
-  const sel = recipes.filter(r=>selectedIds.includes(r.id));
-  if(!sel.length){
-    preview.innerHTML = `<p style="color:#b07890">还没有勾选菜品，先去【今日菜单】选几道吧～</p>`;
-    return;
-  }
-  let html = `<div class="text-lg heart-title mb-2">💌 给杨梅的菜单预览</div>`;
-  sel.forEach(r=>{
-    html += `<div class="mb-1">♡ ${r.name} · ${r.cate} · 难度${r.diff}</div>`;
-  });
-  html += `<div class="text-sm mt-2" style="color:#b07890">打开链接就能直接看到这套菜单啦～</div>`;
-  preview.innerHTML = html;
-}
+function renderAll(){ renderRecipeList(); }
 
-async function copyShare(){
-  const el = document.getElementById("shareLink");
-  if(!el.value){
-    alert("还没有分享链接，先去勾选菜品生成吧～");
-    return;
-  }
-  el.select();
-  el.setSelectionRange(0, 9999);
-  if(navigator.clipboard){
-    await navigator.clipboard.writeText(el.value);
-    alert("链接已复制，发给杨梅吧 💗");
-  }else{
-    document.execCommand("copy");
-    alert("链接已复制，发给杨梅吧 💗");
-  }
-}
-
-function renderAll(){
-  renderRecipeList();
-  renderCheckList();
-}
+window.switchTab = switchTab;
+window.saveRecipe = saveRecipe;
+window.clearForm = clearForm;
+window.filterCate = filterCate;
+window.editRecipe = editRecipe;
+window.delRecipe = delRecipe;
+window.changeQty = changeQty;
+window.generateOrder = generateOrder;
+window.clearOrder = clearOrder;
+window.copyOrderText = copyOrderText;
+window.pickRandom = pickRandom;
 
 window.onload = loadData;
 </script>
