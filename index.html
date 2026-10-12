@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>杨梅的家庭手账菜单 💕</title>
+<title>杨梅的专属菜单 💕</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
@@ -29,50 +29,67 @@ tailwind.config = {
   .tape-card { position: relative; background: #fffbf6; border: 2px solid #F2C4CE; border-radius: 14px; box-shadow: 0 6px 14px rgba(230, 122, 122, 0.12); padding: 18px; }
   .tape { position: absolute; top: -14px; left: 50%; transform: translateX(-50%) rotate(-3deg); background: #FFD1E0; color: #fff; padding: 4px 14px; border-radius: 10px; font-size: 13px; letter-spacing: 1px; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(230, 122, 122, 0.25); }
   .tape.strawberry { background: #E67A7A; } .tape.lemon { background: #F2D166; } .tape.peach { background: #FFBFA3; }
-  .sticker-tag { display: inline-block; padding: 3px 10px; border-radius: 10px; font-family: 'Ma Shan Zheng', cursive; background: #FFD1E0; color: #fff; transform: rotate(-2deg); box-shadow: 0 2px 4px rgba(230, 122, 122, 0.25); margin-right: 6px; margin-bottom: 4px; }
-  .sticker-tag.peach { background: #FFBFA3; } .sticker-tag.lemon { background: #F2D166; color: #7a5b30; } .sticker-tag.berry { background: #E67A7A; }
+  .sticker-tag { display: inline-block; padding: 3px 10px; border-radius: 10px; font-family: 'Ma Shan Zheng', cursive; background: #FFD1E0; color: #fff; transform: rotate(-2deg); box-shadow: 0 2px 4px rgba(230, 122, 122, 0.25); margin-right: 6px; margin-bottom: 4px; font-size: 13px; }
+  .sticker-tag.peach { background: #FFBFA3; } .sticker-tag.lemon { background: #F2D166; color: #7a5b30; } .sticker-tag.berry { background: #E67A7A; } .sticker-tag.sweet { background: #A8E6CF; color: #3B7A57; } .sticker-tag.drink { background: #D4C4FB; color: #5B3E96; }
   .heart-title { font-family: 'Ma Shan Zheng', cursive; background: linear-gradient(90deg, #E67A7A, #FFBFA3); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .btn-cute { background: linear-gradient(180deg, #FFD1E0, #FFB6C8); color: #fff; border: 2px solid #fff; border-radius: 999px; padding: 10px 18px; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.3); transition: transform .15s ease; }
   .btn-cute:hover { transform: translateY(-2px) scale(1.03); }
-  .btn-soft { background: #FFF4B8; color: #7a5b30; border: 2px solid #fff; border-radius: 999px; padding: 8px 14px; box-shadow: 0 3px 8px rgba(242, 209, 102, 0.35); }
-  .btn-pink { background: #FFB6C8; color: #fff; border: 2px solid #fff; border-radius: 999px; padding: 8px 14px; }
-  input, textarea, select { background: #fff; border: 2px dashed #F2C4CE; border-radius: 12px; padding: 10px 12px; font-family: 'ZCOOL KuaiLe', sans-serif; color: #5B4652; width: 100%; }
-  .recipe-card { background: #fff; border: 2px solid #FFD1E0; border-radius: 16px; padding: 14px; box-shadow: 0 6px 14px rgba(230, 122, 122, 0.12); position: relative; overflow: hidden; }
-  .recipe-card::before { content: "♡"; position: absolute; top: 10px; right: 12px; color: #FFB6C8; font-size: 22px; }
-  .recipe-img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.18); }
-  .tab-btn { background: #fff; border: 2px solid #F2C4CE; border-radius: 999px; padding: 8px 14px; color: #5B4652; }
-  .tab-btn.active { background: #FFD1E0; color: #fff; border-color: #FFB6C8; }
+  .btn-soft { background: #FFF4B8; color: #7a5b30; border: 2px solid #fff; border-radius: 999px; padding: 8px 14px; box-shadow: 0 3px 8px rgba(242, 209, 102, 0.35); transition: transform .15s; }
+  .btn-soft:active { transform: scale(0.95); }
+  .btn-pink { background: #FFB6C8; color: #fff; border: 2px solid #fff; border-radius: 999px; padding: 8px 14px; transition: transform .15s; }
+  .btn-pink:active { transform: scale(0.95); }
+  input, select { background: #fff; border: 2px dashed #F2C4CE; border-radius: 12px; padding: 10px 12px; font-family: 'ZCOOL KuaiLe', sans-serif; color: #5B4652; width: 100%; }
+  .recipe-card { background: #fff; border: 2px solid #FFD1E0; border-radius: 16px; padding: 14px; box-shadow: 0 6px 14px rgba(230, 122, 122, 0.12); position: relative; overflow: hidden; transition: transform 0.2s; }
+  .recipe-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(230, 122, 122, 0.2); }
+  .recipe-img { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.18); }
+  .tab-btn { background: #fff; border: 2px solid #F2C4CE; border-radius: 999px; padding: 8px 16px; color: #5B4652; font-size: 0.95rem; transition: all 0.2s; white-space: nowrap; }
+  .tab-btn.active { background: #FFD1E0; color: #fff; border-color: #FFB6C8; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.2); }
+  .tab-btn:hover:not(.active) { background: #FFF7F1; }
   .hand-border { border: 2px dashed #E6A5B8; border-radius: 16px; background: #FFFAF2; padding: 16px; }
-  .tip-bubble { background: #FFF4B8; border-radius: 14px; padding: 10px 14px; color: #7a5b30; position: relative; }
-  .heart-divider { text-align: center; color: #FFB6C8; font-size: 20px; margin: 14px 0; letter-spacing: 4px; }
-  .qty-btn { width: 32px; height: 32px; border-radius: 50%; background: #FFD1E0; color: #E67A7A; font-weight: bold; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(230, 122, 122, 0.2); cursor: pointer; }
-  .qty-btn:active { transform: scale(0.95); }
-  ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: #FFB6C8; border-radius: 4px; }
+  .qty-btn { width: 32px; height: 32px; border-radius: 50%; background: #FFD1E0; color: #E67A7A; font-weight: bold; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(230, 122, 122, 0.2); cursor: pointer; user-select: none; transition: transform 0.1s; }
+  .qty-btn:active { transform: scale(0.85); }
+  .filter-btn { background: #fff; border: 2px solid #FFE0EC; border-radius: 999px; padding: 5px 14px; font-size: 0.85rem; color: #b07890; cursor: pointer; transition: all 0.2s; }
+  .filter-btn.active { background: #FFE0EC; color: #E67A7A; border-color: #FFB6C8; font-weight: bold; }
+  
+  #toast { visibility: hidden; min-width: 250px; background: linear-gradient(135deg, #E67A7A, #FFB6C8); color: #fff; text-align: center; border-radius: 16px; padding: 16px 24px; position: fixed; z-index: 999; left: 50%; bottom: 30px; transform: translateX(-50%) translateY(20px); font-size: 1rem; box-shadow: 0 10px 30px rgba(230, 122, 122, 0.4); border: 3px solid #fff; opacity: 0; transition: opacity 0.3s, transform 0.3s, visibility 0.3s; font-family: 'Ma Shan Zheng', cursive; }
+  #toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: #FFB6C8; border-radius: 4px; }
 </style>
 </head>
 <body class="min-h-screen p-3 md:p-6">
 <div class="max-w-4xl mx-auto notebook">
-  <div class="tape strawberry">杨梅专属手账 ♡</div>
-  <h1 class="text-4xl md:text-5xl text-center heart-title mt-3 mb-2">杨梅的家庭手账菜单</h1>
-  <p class="text-center text-sm mb-4" style="color:#b07890">记录我们爱吃的菜，今天也要一起好好吃饭呀 💕</p>
+  <div class="tape strawberry">杨梅专属 ♡</div>
+  <h1 class="text-4xl md:text-5xl text-center heart-title mt-3 mb-2">杨梅的专属菜单</h1>
+  <p class="text-center text-sm mb-5" style="color:#b07890">所有数据云端实时同步，你选的我都能看见 💕</p>
   
-  <!-- 调整了Tab顺序 -->
-  <div class="flex flex-wrap gap-2 justify-center mb-5">
+  <div class="flex flex-wrap gap-2 justify-center mb-6">
     <button class="tab-btn active" id="tab-order" onclick="switchTab('order')">🛒 点餐台</button>
     <button class="tab-btn" id="tab-random" onclick="switchTab('random')">🎲 随机点单</button>
     <button class="tab-btn" id="tab-history" onclick="switchTab('history')">📜 点单列表</button>
     <button class="tab-btn" id="tab-library" onclick="switchTab('library')">📖 菜谱库</button>
   </div>
 
-  <!-- 点餐台（添加了图片展示） -->
+  <!-- 点餐台 -->
   <div id="page-order" class="page">
     <div class="tape-card mb-4">
-      <div class="tape peach">🛒 杨梅点餐台</div>
-      <div class="tip-bubble mt-3 mb-3 text-sm">🍰 想吃哪个就点哪个，加上备注，生成订单发给大厨吧！</div>
+      <div class="tape peach">🛒 双人共享点餐台</div>
+      <div class="text-sm mt-2 mb-3" style="color:#b07890">🍰 两人共享同一购物车，加减菜品自动同步！</div>
+      
+      <div class="flex flex-wrap gap-2 mb-4" id="orderFilterContainer">
+        <button class="filter-btn active" onclick="filterOrderCate('全部', this)">全部</button>
+        <button class="filter-btn" onclick="filterOrderCate('荤菜', this)">荤菜</button>
+        <button class="filter-btn" onclick="filterOrderCate('素菜', this)">素菜</button>
+        <button class="filter-btn" onclick="filterOrderCate('汤品', this)">汤品</button>
+        <button class="filter-btn" onclick="filterOrderCate('主食', this)">主食</button>
+        <button class="filter-btn" onclick="filterOrderCate('甜品', this)">甜品</button>
+        <button class="filter-btn" onclick="filterOrderCate('酒水', this)">酒水</button>
+      </div>
+
       <div id="orderList" class="grid gap-3 max-h-[420px] overflow-y-auto pr-1"></div>
-      <div class="mt-4">
+      
+      <div class="mt-5">
         <label class="text-sm">给大厨的备注：</label>
-        <input id="orderNote" placeholder="比如：少放辣，多放糖~">
+        <input id="orderNote" placeholder="输入备注会自动同步到对方屏幕哦..." oninput="debouncedSyncCart()">
       </div>
       <div class="mt-4 flex flex-wrap gap-2">
         <button class="btn-cute" onclick="generateOrder()">📝 生成点餐单</button>
@@ -82,7 +99,7 @@ tailwind.config = {
     <div class="hand-border">
       <h3 class="text-xl heart-title mb-2">📋 点餐单预览</h3>
       <div id="orderPreview"><p style="color:#b07890">还没有点菜，去上面选几道吧～</p></div>
-      <button id="copyOrderBtn" class="btn-soft mt-3 hidden" onclick="copyOrderText()">📋 复制点餐单</button>
+      <button id="copyOrderBtn" class="btn-soft mt-4 hidden" onclick="copyOrderText()">📋 复制点餐单</button>
     </div>
   </div>
 
@@ -91,20 +108,20 @@ tailwind.config = {
     <div class="tape-card">
       <div class="tape strawberry">今天吃什么？交给幸运签</div>
       <div class="mt-3 text-sm" style="color:#b07890">杨梅选一个数量，我来帮你随机抽菜啦 ✨</div>
-      <div class="mt-3 flex flex-wrap items-center gap-2">
+      <div class="mt-4 flex flex-wrap items-center gap-3">
         <label>抽取数量：</label>
         <input id="randNum" type="number" value="3" min="1" max="12" style="width:90px">
         <button class="btn-cute" onclick="pickRandom()">🎲 开始随机点单</button>
       </div>
-      <div id="randResult" class="mt-4"></div>
+      <div id="randResult" class="mt-5"></div>
     </div>
   </div>
 
-  <!-- 点单历史（新增） -->
+  <!-- 点单历史 -->
   <div id="page-history" class="page hidden">
     <div class="tape-card mb-4">
       <div class="tape lemon">📜 历史点单记录</div>
-      <div class="tip-bubble mt-3 mb-3 text-sm">这里记录了杨梅点过的所有菜单，时间倒序排列哦～</div>
+      <div class="tip-bubble mt-3 mb-4 text-sm">这里记录了杨梅点过的所有菜单，双端实时同步～</div>
       <div id="historyList" class="grid gap-3 max-h-[500px] overflow-y-auto pr-1"></div>
     </div>
   </div>
@@ -114,7 +131,7 @@ tailwind.config = {
     <div class="tape-card mb-5">
       <div class="tape lemon">添加一道杨梅爱吃的菜</div>
       <input type="hidden" id="editId">
-      <div class="grid md:grid-cols-2 gap-3 mt-2">
+      <div class="grid md:grid-cols-2 gap-4 mt-4">
         <div><label class="text-sm">菜名 ♡</label><input id="rname" placeholder="比如：番茄炒蛋"></div>
         <div>
           <label class="text-sm">分类</label>
@@ -123,6 +140,8 @@ tailwind.config = {
             <option value="素菜">素菜</option>
             <option value="汤品">汤品</option>
             <option value="主食">主食</option>
+            <option value="甜品">甜品</option>
+            <option value="酒水">酒水</option>
           </select>
         </div>
         <div>
@@ -139,13 +158,12 @@ tailwind.config = {
           <input type="hidden" id="rimg">
           <p id="upload-status" class="text-xs text-blue-500 mt-1"></p>
           <img id="rimg-preview" class="mt-2 rounded hidden" style="max-height:100px; border:2px solid #FFD1E0;">
-          <p class="text-xs mt-1" style="color:#b07890;">或者手动粘贴图片链接：</p>
+          <p class="text-xs mt-2" style="color:#b07890;">或者手动粘贴图片链接：</p>
           <input id="rimg-url" placeholder="https://..." oninput="document.getElementById('rimg').value = this.value">
         </div>
       </div>
-      <div class="mt-3"><label class="text-sm">食材（逗号分隔）</label><textarea id="ringre" rows="2" placeholder="鸡蛋, 番茄, 盐, 糖"></textarea></div>
-      <div class="mt-3"><label class="text-sm">做法</label><textarea id="rstep" rows="3" placeholder="简单写一下步骤就好啦"></textarea></div>
-      <div class="mt-4 flex flex-wrap gap-2">
+      
+      <div class="mt-5 flex flex-wrap gap-3">
         <button class="btn-cute" onclick="saveRecipe()">💾 保存菜谱</button>
         <button class="btn-soft" onclick="clearForm()">🧹 清空表单</button>
       </div>
@@ -153,136 +171,129 @@ tailwind.config = {
     </div>
     
     <div class="flex flex-wrap gap-2 mb-4">
-      <span class="text-sm" style="color:#b07890">分类筛选：</span>
-      <button class="sticker-tag" onclick="filterCate('全部')">全部</button>
-      <button class="sticker-tag peach" onclick="filterCate('荤菜')">荤菜</button>
-      <button class="sticker-tag lemon" onclick="filterCate('素菜')">素菜</button>
-      <button class="sticker-tag berry" onclick="filterCate('汤品')">汤品</button>
-      <button class="sticker-tag peach" onclick="filterCate('主食')">主食</button>
+      <span class="text-sm pt-1" style="color:#b07890">分类筛选：</span>
+      <button class="filter-btn active" onclick="filterCate('全部', this)">全部</button>
+      <button class="filter-btn" onclick="filterCate('荤菜', this)">荤菜</button>
+      <button class="filter-btn" onclick="filterCate('素菜', this)">素菜</button>
+      <button class="filter-btn" onclick="filterCate('汤品', this)">汤品</button>
+      <button class="filter-btn" onclick="filterCate('主食', this)">主食</button>
+      <button class="filter-btn" onclick="filterCate('甜品', this)">甜品</button>
+      <button class="filter-btn" onclick="filterCate('酒水', this)">酒水</button>
     </div>
     <div id="recipeList" class="grid md:grid-cols-2 gap-4"></div>
   </div>
 </div>
 
+<div id="toast"></div>
+
 <script>
-// ============ 你的 Supabase 配置 ============
+// ============ Supabase 配置 ============
 const SUPABASE_URL = "https://walbapquafqibcqdhazq.supabase.co"; 
 const SUPABASE_ANON_KEY = "sb_publishable_P3OMyZLQbYGHLrbrOVXEdw_cLD4Livn";
-let supabaseClient = null;
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-try {
-  if (window.supabase && SUPABASE_ANON_KEY.length > 20) {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-} catch(e) {
-  console.error("Supabase 初始化失败", e);
-  document.getElementById("db-status").innerText = "⚠️ 云端连接失败，已切换为本地模式（数据保存在浏览器中）";
-}
-// ============================================
+const loveQuotes = [
+  "只要是你点的，我都做给你吃 🍳", "今天也是爱杨梅的一天 💕", "杨梅想吃的，就是世界上最好的美味 ✨",
+  "大厨已就位，随时准备投喂 🥰", "爱意藏在每一顿饭菜里 🍲", "希望杨梅每天都能吃得开心 🍰",
+  "把你喂胖，就没人能抢走你啦 🐷", "你想吃的，我都会学 🌟", "有杨梅在，粗茶淡饭也是山珍海味 💖"
+];
 
-let recipes = JSON.parse(localStorage.getItem('yangmei_recipes')) || [];
-let cart = JSON.parse(localStorage.getItem('yangmei_cart')) || {}; 
+let recipes = [];
+let cart = { items: [], note: '' };
 let filterCategory = "全部";
+let orderFilterCategory = "全部";
 let editDocId = null;
+let syncTimeout = null;
 
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.innerText = message;
+  toast.className = "show";
+  setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
+}
+
+// ============ 核心数据拉取 (完全从云端读取) ============
+async function loadAllData() {
+  try {
+    // 1. 拉取菜谱
+    const { data: recipeData, error: recipeErr } = await supabaseClient.from('recipes').select('*').order('created_at', { ascending: false });
+    if (recipeErr) throw recipeErr;
+    recipes = recipeData || [];
+
+    // 2. 拉取购物车
+    const { data: cartData, error: cartErr } = await supabaseClient.from('cart').select('*').eq('id', 1).single();
+    if (cartErr) throw cartErr;
+    cart = cartData || { items: [], note: '' };
+    
+    // 填充备注输入框
+    document.getElementById("orderNote").value = cart.note || '';
+
+    // 3. 渲染UI
+    renderAll();
+    renderOrderPreview();
+  } catch (e) {
+    console.error("加载数据失败", e);
+    document.getElementById("db-status").innerText = "⚠️ 云端读取失败，请检查网络或数据库配置";
+  }
+}
+
+// ============ 菜谱库操作 ============
 async function uploadImage() {
   const fileInput = document.getElementById("rimg-file");
   const file = fileInput.files[0];
   if (!file) return;
-
   const preview = document.getElementById("rimg-preview");
   preview.src = URL.createObjectURL(file);
   preview.classList.remove("hidden");
-
   const status = document.getElementById("upload-status");
-  
-  if (!supabaseClient) {
-    status.innerText = "⚠️ 本地模式无法上传图片，请手动粘贴网络图片链接。";
-    status.className = "text-xs text-red-400 mt-1";
-    return;
-  }
-
   status.innerText = "⏳ 正在上传图片到云端...";
-  status.className = "text-xs text-blue-500 mt-1";
 
   try {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-    const { data, error } = await supabaseClient.storage.from('recipe-images').upload(fileName, file);
+    const { error } = await supabaseClient.storage.from('recipe-images').upload(fileName, file);
     if (error) throw error;
-
     const { data: urlData } = supabaseClient.storage.from('recipe-images').getPublicUrl(fileName);
     document.getElementById("rimg").value = urlData.publicUrl;
     document.getElementById("rimg-url").value = urlData.publicUrl;
-    
     status.innerText = "✅ 图片上传成功！";
     status.className = "text-xs text-green-500 mt-1";
   } catch (err) {
-    console.error("上传失败", err);
-    status.innerText = "❌ 上传失败：" + err.message + "（请检查Storage桶和权限配置）";
+    status.innerText = "❌ 上传失败：" + err.message;
     status.className = "text-xs text-red-400 mt-1";
   }
 }
 
-async function loadData() {
-  if (supabaseClient) {
-    try {
-      const {data:recipeData, error:recipeErr} = await supabaseClient.from('recipes').select('*').order('id',{ascending:false});
-      if(recipeErr) throw recipeErr;
-      if (recipeData && recipeData.length > 0) {
-        recipes = recipeData;
-        localStorage.setItem('yangmei_recipes', JSON.stringify(recipes));
-      }
-    } catch(e) {
-      console.error("读取云端失败", e);
-      document.getElementById("db-status").innerText = "⚠️ 读取云端失败，已切换为本地模式";
-    }
-  }
-  renderAll();
-}
-
 async function saveRecipe(){
   const name = document.getElementById("rname").value.trim();
-  if(!name){ alert("菜名不能为空哦 😳"); return; }
+  if(!name){ showToast("菜名不能为空哦 😳"); return; }
   
   const payload = {
     name: name,
     cate: document.getElementById("rcate").value,
     diff: document.getElementById("rdiff").value,
-    img: document.getElementById("rimg").value,
-    ingre: document.getElementById("ringre").value,
-    step: document.getElementById("rstep").value
+    img: document.getElementById("rimg").value
   };
 
   if (editDocId) {
-    const idx = recipes.findIndex(r => r.id === editDocId);
-    if(idx > -1) recipes[idx] = {...recipes[idx], ...payload};
+    const { error } = await supabaseClient.from('recipes').update(payload).eq('id', editDocId);
+    if(error) { showToast("云端更新失败"); return; }
   } else {
-    payload.id = Date.now(); 
-    recipes.unshift(payload);
-  }
-  localStorage.setItem('yangmei_recipes', JSON.stringify(recipes));
-  
-  if (supabaseClient) {
-    try {
-      let res;
-      if(editDocId) {
-        res = await supabaseClient.from('recipes').update(payload).eq('id',editDocId);
-      } else {
-        res = await supabaseClient.from('recipes').insert([payload]);
-      }
-      if(res.error) throw res.error;
-      alert("已成功保存到云端啦 💗");
-    } catch(e) {
-      alert("云端保存失败（已存到本地）：" + e.message);
-    }
-  } else {
-    alert("已保存到本地啦 💗 (若需云端同步请检查Supabase配置)");
+    const { error } = await supabaseClient.from('recipes').insert([payload]);
+    if(error) { showToast("云端保存失败"); return; }
   }
   
+  showToast("已保存到云端啦 💗");
   editDocId = null;
   clearForm();
-  renderAll();
+  loadAllData();
+}
+
+async function delRecipe(id){
+  if(!confirm("确定要把这道菜从杨梅的菜单里删掉吗？")) return;
+  const { error } = await supabaseClient.from('recipes').delete().eq('id', id);
+  if(error) { showToast("云端删除失败"); return; }
+  loadAllData();
 }
 
 function clearForm(){
@@ -295,74 +306,75 @@ function clearForm(){
   document.getElementById("rimg-file").value = "";
   document.getElementById("rimg-preview").classList.add("hidden");
   document.getElementById("upload-status").innerText = "";
-  document.getElementById("ringre").value = "";
-  document.getElementById("rstep").value = "";
 }
 
 function renderRecipeList(){
   const wrap = document.getElementById("recipeList");
   let list = filterCategory==="全部" ? recipes : recipes.filter(r=>r.cate===filterCategory);
-  wrap.innerHTML = "";
-  if(list.length === 0){
-    wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">还没有菜谱，快去添加吧～</p>';
-    return;
-  }
+  wrap.innerHTML = list.length === 0 ? '<p class="text-center text-sm col-span-2" style="color:#b07890">还没有菜谱，快去添加吧～</p>' : '';
+  
   list.forEach(r=>{
     const div = document.createElement("div");
     div.className = "recipe-card";
     div.innerHTML = `
       <img class="recipe-img" src="${r.img||'https://via.placeholder.com/300x200/FFD1E0/ffffff?text=美食'}" onerror="this.src='https://via.placeholder.com/300x200/FFD1E0/ffffff?text=美食'">
-      <div class="text-xl mt-2 heart-title">${r.name}</div>
-      <div class="mt-1">
-        <span class="sticker-tag peach">${r.cate}</span>
+      <div class="text-xl mt-3 heart-title">${r.name}</div>
+      <div class="mt-2 flex flex-wrap gap-1">
+        <span class="sticker-tag ${r.cate === '甜品' ? 'sweet' : r.cate === '酒水' ? 'drink' : 'peach'}">${r.cate}</span>
         <span class="sticker-tag lemon">难度 ${r.diff}</span>
       </div>
-      <div class="text-sm mt-2">🥕 食材：${r.ingre}</div>
-      <div class="text-sm mt-1">📝 做法：${r.step}</div>
-      <div class="mt-3 flex gap-2">
-        <button class="btn-soft" onclick="editRecipe(${r.id})">✏️ 编辑</button>
-        <button class="btn-pink" onclick="delRecipe(${r.id})">🗑 删除</button>
+      <div class="mt-4 flex gap-2">
+        <button class="btn-soft flex-1" onclick="editRecipe(${r.id})">✏️ 编辑</button>
+        <button class="btn-pink flex-1" onclick="delRecipe(${r.id})">🗑 删除</button>
       </div>
     `;
     wrap.appendChild(div);
   });
 }
 
-function filterCate(c){ filterCategory = c; renderRecipeList(); }
-
-function switchTab(name){
-  document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
-  const targetPage = document.getElementById("page-"+name);
-  if(targetPage) targetPage.classList.remove("hidden");
-  
-  document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
-  const targetTab = document.getElementById("tab-"+name);
-  if(targetTab) targetTab.classList.add("active");
-  
-  if(name==="order") renderOrderList();
-  if(name==="random") document.getElementById("randResult").innerHTML = '';
-  if(name==="history") renderHistoryList();
-  if(name==="library") renderRecipeList();
+function filterCate(c, btn){
+  filterCategory = c;
+  document.querySelectorAll("#page-library .filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  renderRecipeList(); 
 }
 
-// ============ 点餐台功能 (含图片展示) ============
+function editRecipe(id){
+  editDocId = id;
+  const r = recipes.find(x=>x.id === id);
+  document.getElementById("rname").value = r.name;
+  document.getElementById("rcate").value = r.cate;
+  document.getElementById("rdiff").value = r.diff;
+  document.getElementById("rimg").value = r.img || "";
+  document.getElementById("rimg-url").value = r.img || "";
+  if(r.img) {
+    document.getElementById("rimg-preview").src = r.img;
+    document.getElementById("rimg-preview").classList.remove("hidden");
+  }
+  switchTab('library');
+}
+
+// ============ 点餐台操作 (含云端同步) ============
+function filterOrderCate(c, btn){
+  orderFilterCategory = c;
+  document.querySelectorAll("#page-order .filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  renderOrderList();
+}
+
 function renderOrderList(){
   const wrap = document.getElementById("orderList");
   wrap.innerHTML = "";
-  if(recipes.length === 0){
-    wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">菜谱库是空的，先添加菜品吧～</p>';
-    return;
-  }
-  recipes.forEach(r=>{
-    const qty = cart[r.id] || 0;
+  let list = orderFilterCategory === "全部" ? recipes : recipes.filter(r => r.cate === orderFilterCategory);
+  if(list.length === 0) { wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">这个分类下还没有菜品哦～</p>'; return; }
+
+  list.forEach(r=>{
+    const qty = (cart.items.find(i => i.id === r.id) || {}).qty || 0;
     const div = document.createElement("div");
-    div.className = "check-item";
-    div.style.justifyContent = "space-between";
-    div.style.display = "flex";
-    div.style.alignItems = "center";
+    div.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#fff; border:2px dashed #FFD1E0; border-radius:12px; padding:10px 12px;";
     div.innerHTML = `
       <div style="display:flex; align-items:center; gap:12px; flex:1;">
-        <img src="${r.img || 'https://via.placeholder.com/100/FFD1E0/ffffff?text=图'}" style="width:50px; height:50px; object-fit:cover; border-radius:10px; border:2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05);" onerror="this.src='https://via.placeholder.com/100/FFD1E0/ffffff?text=图'">
+        <img src="${r.img || 'https://via.placeholder.com/100/FFD1E0/ffffff?text=图'}" style="width:50px; height:50px; object-fit:cover; border-radius:10px;" onerror="this.src='https://via.placeholder.com/100/FFD1E0/ffffff?text=图'">
         <div>
           <div style="font-size:1.1rem; font-weight:bold;">${r.name}</div>
           <div style="font-size:0.8rem; color:#b07890;">${r.cate} · 难度${r.diff}</div>
@@ -370,7 +382,7 @@ function renderOrderList(){
       </div>
       <div style="display:flex; align-items:center; gap:8px;">
         ${qty > 0 ? `<div class="qty-btn" onclick="changeQty(${r.id}, -1)">-</div>` : ''}
-        <span style="font-family:'Ma Shan Zheng';font-size:1.2rem;color:#E67A7A;width:20px;text-align:center;">${qty > 0 ? qty : ''}</span>
+        <span style="font-family:'Ma Shan Zheng';font-size:1.3rem;color:#E67A7A;width:24px;text-align:center;">${qty > 0 ? qty : ''}</span>
         <div class="qty-btn" onclick="changeQty(${r.id}, 1)">+</div>
       </div>
     `;
@@ -378,22 +390,42 @@ function renderOrderList(){
   });
 }
 
+// 乐观更新 + 防抖同步云端
 function changeQty(id, delta){
-  if(!cart[id]) cart[id] = 0;
-  cart[id] += delta;
-  if(cart[id] <= 0) delete cart[id];
-  localStorage.setItem('yangmei_cart', JSON.stringify(cart));
+  let item = cart.items.find(i => i.id === id);
+  if(!item) { item = { id: id, qty: 0 }; cart.items.push(item); }
+  item.qty += delta;
+  if(item.qty <= 0) cart.items = cart.items.filter(i => i.id !== id);
+  
+  // 立即更新UI
   renderOrderList();
   renderOrderPreview();
+  
+  // 防抖 500ms 后同步到云端
+  debouncedSyncCart();
+}
+
+function debouncedSyncCart() {
+  clearTimeout(syncTimeout);
+  syncTimeout = setTimeout(async () => {
+    cart.note = document.getElementById("orderNote").value;
+    const { error } = await supabaseClient.from('cart').update({
+      items: cart.items,
+      note: cart.note,
+      updated_at: new Date().toISOString()
+    }).eq('id', 1);
+    if(error) console.error("购物车同步失败", error);
+  }, 500);
 }
 
 function renderOrderPreview(){
   const preview = document.getElementById("orderPreview");
   const copyBtn = document.getElementById("copyOrderBtn");
-  const note = document.getElementById("orderNote").value.trim();
-  const items = Object.keys(cart).map(id => {
-    const r = recipes.find(x => x.id == id);
-    return r ? `${r.name} x${cart[id]}` : null;
+  const note = document.getElementById("orderNote").value;
+  
+  const items = cart.items.map(i => {
+    const r = recipes.find(x => x.id == i.id);
+    return r ? `${r.name} x${i.qty}` : null;
   }).filter(Boolean);
 
   if(items.length === 0){
@@ -411,97 +443,81 @@ function renderOrderPreview(){
   copyBtn.classList.remove('hidden');
 }
 
-// 生成点餐单并保存历史记录
-function generateOrder(){
-  renderOrderPreview();
+async function generateOrder(){
+  if(cart.items.length === 0) { showToast("还没有点菜哦，去上面选几道吧～"); return; }
+  
+  showToast(loveQuotes[Math.floor(Math.random() * loveQuotes.length)]);
   
   const note = document.getElementById("orderNote").value.trim();
-  const items = Object.keys(cart).map(id => {
-    const r = recipes.find(x => x.id == id);
-    // 保存快照，以防菜谱库删除后历史记录无法显示
-    return r ? { id: r.id, name: r.name, img: r.img, cate: r.cate, diff: r.diff, qty: cart[id] } : null;
+  // 制作快照
+  const snapshot = cart.items.map(i => {
+    const r = recipes.find(x => x.id == i.id);
+    return r ? { id: r.id, name: r.name, img: r.img, cate: r.cate, qty: i.qty } : null;
   }).filter(Boolean);
 
-  if(items.length > 0){
-    // 1. 保存到本地历史记录
-    let history = JSON.parse(localStorage.getItem('yangmei_history')) || [];
-    const orderRecord = {
-      id: Date.now(),
-      date: new Date().toLocaleString(),
-      note: note,
-      items: items
-    };
-    history.unshift(orderRecord); // 头部插入，实现时间倒序
-    if (history.length > 50) history = history.slice(0, 50); // 最多保留50条
-    localStorage.setItem('yangmei_history', JSON.stringify(history));
+  // 1. 写入历史记录
+  await supabaseClient.from('daily_menu').insert([{ note: note, items: snapshot }]);
 
-    // 2. 尝试同步到云端 daily_menu (只存ID数组)
-    if (supabaseClient) {
-      const todayStr = new Date().toISOString().split('T')[0];
-      supabaseClient.from('daily_menu').insert([{
-        menu_date: todayStr,
-        selected_ids: items.map(i => i.id)
-      }]).then(({error}) => {
-        if(error) console.error("同步点单记录到云端失败", error);
-      });
-    }
-    
-    document.getElementById("orderPreview").scrollIntoView({behavior:"smooth"});
-    // 自动刷新一下历史列表，下次切换过去数据是新的
-  } else {
-    alert("还没有点菜，去上面选几道吧～");
-  }
-}
-
-function clearOrder(){
-  if(!confirm("确定要清空点餐单吗？")) return;
-  cart = {};
-  document.getElementById("orderNote").value = "";
-  localStorage.removeItem('yangmei_cart');
+  // 2. 清空云端购物车
+  await supabaseClient.from('cart').update({ items: [], note: '', updated_at: new Date().toISOString() }).eq('id', 1);
+  
+  // 3. 更新本地状态并刷新
+  cart.items = [];
+  document.getElementById("orderNote").value = '';
   renderOrderList();
   renderOrderPreview();
+  loadAllData(); // 重新拉取确保数据一致
+  document.getElementById("orderPreview").scrollIntoView({behavior:"smooth"});
+}
+
+async function clearOrder(){
+  if(!confirm("确定要清空双方的点餐车吗？")) return;
+  await supabaseClient.from('cart').update({ items: [], note: '', updated_at: new Date().toISOString() }).eq('id', 1);
+  cart.items = [];
+  document.getElementById("orderNote").value = '';
+  renderOrderList();
+  renderOrderPreview();
+  showToast("已清空点餐车");
 }
 
 function copyOrderText(){
   const note = document.getElementById("orderNote").value.trim();
-  const items = Object.keys(cart).map(id => {
-    const r = recipes.find(x => x.id == id);
-    return r ? `${r.name} x${cart[id]}` : null;
-  }).filter(Boolean);
-
   let text = `🍽️ 杨梅的点餐单\n\n`;
-  items.forEach((item, i) => { text += `${i+1}. ${item}\n`; });
+  cart.items.forEach((i, index) => {
+    const r = recipes.find(x => x.id == i.id);
+    if(r) text += `${index+1}. ${r.name} x${i.qty}\n`;
+  });
   if(note) text += `\n📝 备注：${note}\n`;
   text += `\n大厨，今天就拜托你啦！💕`;
 
   navigator.clipboard.writeText(text).then(() => {
-    alert("点餐单已复制！快发给大厨吧 💗");
+    showToast("点餐单已复制！快发给大厨吧 💗");
   }).catch(() => {
-    const ta = document.createElement("textarea");
-    ta.value = text; document.body.appendChild(ta);
-    ta.select(); document.execCommand("copy");
-    document.body.removeChild(ta);
-    alert("点餐单已复制！快发给大厨吧 💗");
+    const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
+    showToast("点餐单已复制！快发给大厨吧 💗");
   });
 }
 
-// ============ 历史记录渲染 (新增) ============
-function renderHistoryList(){
+// ============ 历史记录 (从云端读取) ============
+async function renderHistoryList(){
   const wrap = document.getElementById("historyList");
-  let history = JSON.parse(localStorage.getItem('yangmei_history')) || [];
+  wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">正在从云端拉取记录...</p>';
   
-  wrap.innerHTML = "";
-  if(history.length === 0){
+  const { data: history, error } = await supabaseClient.from('daily_menu').select('*').order('order_time', { ascending: false });
+  if(error || !history || history.length === 0){
     wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">还没有点过单哦，快去点餐台试试吧～</p>';
     return;
   }
 
+  wrap.innerHTML = "";
   history.forEach(record => {
+    const dateObj = new Date(record.order_time);
+    const timeStr = dateObj.toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     const div = document.createElement("div");
     div.className = "recipe-card";
     
     let itemsHtml = "";
-    record.items.forEach(item => {
+    (record.items || []).forEach(item => {
       itemsHtml += `
         <div style="display:flex; align-items:center; gap:10px; background:#FFFAF2; padding:10px; border-radius:10px; border:1px dashed #FFE0EC; margin-bottom:8px;">
           <img src="${item.img || 'https://via.placeholder.com/100/FFD1E0/ffffff?text=图'}" style="width:40px; height:40px; object-fit:cover; border-radius:8px;" onerror="this.src='https://via.placeholder.com/100/FFD1E0/ffffff?text=图'">
@@ -509,16 +525,15 @@ function renderHistoryList(){
             ${item.name} <span class="sticker-tag peach" style="font-size:11px; padding:1px 8px;">x${item.qty}</span>
           </div>
           <div style="font-size:0.75rem; color:#b07890;">${item.cate}</div>
-        </div>
-      `;
+        </div>`;
     });
 
     div.innerHTML = `
-      <div class="text-lg heart-title mb-2 flex justify-between items-center">
-        <span>📅 ${record.date}</span>
+      <div class="text-lg heart-title mb-3 flex justify-between items-center border-b-2 border-dashed border-pink-200 pb-2">
+        <span>📅 ${timeStr}</span>
       </div>
       <div class="grid md:grid-cols-2 gap-2">${itemsHtml}</div>
-      ${record.note ? `<div class="text-sm mt-2" style="color:#b07890; background:#FFF4B8; padding:8px; border-radius:8px;">📝 备注：${record.note}</div>` : ''}
+      ${record.note ? `<div class="text-sm mt-3" style="color:#b07890; background:#FFF4B8; padding:10px; border-radius:10px;">📝 备注：${record.note}</div>` : ''}
     `;
     wrap.appendChild(div);
   });
@@ -528,68 +543,52 @@ function renderHistoryList(){
 function pickRandom(){
   const num = Number(document.getElementById("randNum").value);
   const wrap = document.getElementById("randResult");
-  if(recipes.length ===0){
-    wrap.innerHTML = `<p>菜谱库是空的，先给杨梅加几道菜吧～</p>`;
-    return;
-  }
+  if(recipes.length ===0){ wrap.innerHTML = `<p>菜谱库是空的，先给杨梅加几道菜吧～</p>`; return; }
   const copy = [...recipes].sort(()=>Math.random()-0.5).slice(0,num);
-  let html = `<div class="hand-border">`;
-  html += `<div class="text-lg heart-title mb-2">🎲 今日幸运菜单</div>`;
+  let html = `<div class="hand-border"><div class="text-lg heart-title mb-3">🎲 今日幸运菜单</div>`;
   copy.forEach((r,i)=>{
-    html += `<div class="mb-1">${i+1}. ${r.name} <span class="sticker-tag peach" style="font-size:12px">${r.cate}</span></div>`;
+    html += `<div class="mb-2">${i+1}. ${r.name} <span class="sticker-tag ${r.cate === '甜品' ? 'sweet' : r.cate === '酒水' ? 'drink' : 'peach'}" style="font-size:12px">${r.cate}</span></div>`;
   });
-  html += `<div class="text-sm mt-2" style="color:#b07890">是不是杨梅爱吃的那几道呢？💕</div>`;
-  html += `</div>`;
+  html += `<div class="text-sm mt-3" style="color:#b07890">是不是杨梅爱吃的那几道呢？💕</div></div>`;
   wrap.innerHTML = html;
 }
 
-function renderAll(){ renderRecipeList(); }
-
-function editRecipe(id){
-  editDocId = id;
-  const r = recipes.find(x=>x.id === id);
-  document.getElementById("rname").value = r.name;
-  document.getElementById("rcate").value = r.cate;
-  document.getElementById("rdiff").value = r.diff;
-  document.getElementById("rimg").value = r.img || "";
-  document.getElementById("rimg-url").value = r.img || "";
-  if(r.img) {
-    const preview = document.getElementById("rimg-preview");
-    preview.src = r.img;
-    preview.classList.remove("hidden");
-  }
-  document.getElementById("ringre").value = r.ingre;
-  document.getElementById("rstep").value = r.step;
+// ============ UI 交互与 Tab 切换 ============
+function switchTab(name){
+  document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+  document.getElementById("page-"+name).classList.remove("hidden");
+  document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+  document.getElementById("tab-"+name).classList.add("active");
   
-  // 自动切换到菜谱库Tab
-  switchTab('library');
+  if(name==="order") { renderOrderList(); }
+  if(name==="random") document.getElementById("randResult").innerHTML = '';
+  if(name==="history") renderHistoryList();
+  if(name==="library") renderRecipeList();
 }
 
-async function delRecipe(id){
-  if(!confirm("确定要把这道菜从杨梅的菜单里删掉吗？")) return;
-  if (supabaseClient) {
-    const {error} = await supabaseClient.from('recipes').delete().eq('id',id);
-    if(error){ alert("云端删除失败："+error.message); return; }
-  }
-  recipes = recipes.filter(r => r.id !== id);
-  localStorage.setItem('yangmei_recipes', JSON.stringify(recipes));
-  renderAll();
+function renderAll(){
+  renderRecipeList();
+  renderOrderList();
+  renderOrderPreview();
 }
 
+// 绑定全局函数
 window.switchTab = switchTab;
 window.saveRecipe = saveRecipe;
 window.clearForm = clearForm;
 window.filterCate = filterCate;
+window.filterOrderCate = filterOrderCate;
 window.editRecipe = editRecipe;
 window.delRecipe = delRecipe;
 window.changeQty = changeQty;
+window.debouncedSyncCart = debouncedSyncCart;
 window.generateOrder = generateOrder;
 window.clearOrder = clearOrder;
 window.copyOrderText = copyOrderText;
 window.pickRandom = pickRandom;
 window.uploadImage = uploadImage;
 
-window.onload = loadData;
+window.onload = loadAllData;
 </script>
 </body>
 </html>
