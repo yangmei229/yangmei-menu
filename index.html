@@ -57,6 +57,32 @@ tailwind.config = {
   .upload-btn { border: 2px dashed #F2C4CE; color: #E67A7A; background-color: #FFF7F1; padding: 12px; border-radius: 12px; font-size: 0.95rem; text-align: center; width: 100%; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'ZCOOL KuaiLe', sans-serif; cursor: pointer; }
   .upload-btn:hover { background-color: #FFE0EC; border-color: #FFB6C8; }
 
+  /* 昵称设置弹框 */
+  #name-modal {
+    visibility: hidden; opacity: 0;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 238, 242, 0.7);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10001;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #name-modal.show { visibility: visible; opacity: 1; }
+  #name-content {
+    background: linear-gradient(135deg, #ffffff, #FFF7F1);
+    border: 4px dashed #FFB6C8;
+    padding: 40px; border-radius: 32px;
+    box-shadow: 0 25px 60px rgba(230, 122, 122, 0.4), inset 0 0 30px rgba(255, 214, 224, 0.3);
+    text-align: center;
+    max-width: 90%; position: relative;
+  }
+  #name-content::before {
+    content: "👋"; position: absolute; top: -22px; left: 50%;
+    transform: translateX(-50%); background: #FFD1E0;
+    padding: 6px 16px; border-radius: 24px; font-size: 24px;
+    border: 3px solid #fff; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.2);
+  }
+
   /* 全屏居中 Modal Toast (自己操作时) */
   #toast-modal {
     visibility: hidden; opacity: 0;
@@ -88,7 +114,6 @@ tailwind.config = {
   #toast-message {
     font-family: 'Ma Shan Zheng', cursive; font-size: 1.6rem;
     color: #E67A7A; line-height: 1.6; letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(230, 122, 122, 0.1);
   }
   #toast-icon { font-size: 3rem; margin-bottom: 15px; display: block; animation: heartBeat 1.5s infinite; }
   @keyframes heartBeat { 0% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } 70% { transform: scale(1); } }
@@ -124,17 +149,16 @@ tailwind.config = {
   #notify-message {
     font-family: 'Ma Shan Zheng', cursive; font-size: 1.8rem;
     color: #E67A7A; line-height: 1.5; letter-spacing: 2px;
-    margin-bottom: 20px; text-shadow: 0 2px 4px rgba(230, 122, 122, 0.1);
+    margin-bottom: 20px;
   }
   #notify-sub {
     font-size: 0.95rem; color: #b07890; margin-bottom: 25px;
-    font-family: 'ZCOOL KuaiLe', sans-serif;
   }
   #notify-close-btn {
     background: linear-gradient(180deg, #FFD1E0, #FFB6C8); color: #fff; border: 2px solid #fff;
     border-radius: 999px; padding: 10px 30px; font-size: 1rem;
     box-shadow: 0 4px 12px rgba(230, 122, 122, 0.3);
-    cursor: pointer; transition: all 0.2s ease; font-family: 'ZCOOL KuaiLe', sans-serif;
+    cursor: pointer; transition: all 0.2s ease;
   }
   #notify-close-btn:hover { transform: translateY(-2px) scale(1.03); }
 
@@ -143,7 +167,7 @@ tailwind.config = {
 </head>
 <body class="min-h-screen p-3 md:p-6">
 <div class="max-w-4xl mx-auto notebook">
-  <div class="tape strawberry">杨梅专属 ♡</div>
+  <div class="tape strawberry">专属菜单 ♡</div>
   <h1 class="text-4xl md:text-5xl text-center heart-title mt-3 mb-2">杨梅的专属菜单</h1>
   <p class="text-center text-sm mb-5" style="color:#b07890">所有数据云端实时同步，你选的我都能看见 💕</p>
   
@@ -171,7 +195,7 @@ tailwind.config = {
       </div>
 
       <div id="orderList" class="grid gap-3 max-h-[420px] overflow-y-auto pr-1">
-        <div class="loading-text">正在加载杨梅的菜单...</div>
+        <div class="loading-text">正在加载菜单...</div>
       </div>
       
       <div class="mt-5">
@@ -194,7 +218,7 @@ tailwind.config = {
   <div id="page-random" class="page hidden">
     <div class="tape-card">
       <div class="tape strawberry">今天吃什么？交给幸运签</div>
-      <div class="mt-3 text-sm" style="color:#b07890">杨梅选一个数量，我来帮你随机抽菜啦 ✨</div>
+      <div class="mt-3 text-sm" style="color:#b07890">选一个数量，我来帮你随机抽菜啦 ✨</div>
       <div class="mt-4 flex flex-wrap items-center gap-3">
         <label>抽取数量：</label>
         <input id="randNum" type="number" value="3" min="1" max="12" style="width:90px">
@@ -212,7 +236,7 @@ tailwind.config = {
   <div id="page-history" class="page hidden">
     <div class="tape-card mb-4">
       <div class="tape lemon">📜 历史点单记录</div>
-      <div class="tip-bubble mt-3 mb-4 text-sm">这里记录了杨梅点过的所有菜单，双端实时同步～</div>
+      <div class="tip-bubble mt-3 mb-4 text-sm">这里记录了你们点过的所有菜单，双端实时同步～</div>
       <div id="historyList" class="grid gap-3 max-h-[500px] overflow-y-auto pr-1"></div>
     </div>
   </div>
@@ -220,7 +244,7 @@ tailwind.config = {
   <!-- 菜谱库 -->
   <div id="page-library" class="page hidden">
     <div class="tape-card mb-5">
-      <div class="tape lemon">添加一道杨梅爱吃的菜</div>
+      <div class="tape lemon">添加一道爱吃的菜</div>
       <input type="hidden" id="editId">
       <div class="grid md:grid-cols-2 gap-4 mt-4">
         <div><label class="text-sm">菜名 ♡</label><input id="rname" placeholder="比如：番茄炒蛋"></div>
@@ -278,6 +302,16 @@ tailwind.config = {
   </div>
 </div>
 
+<!-- 昵称设置弹框 (首次进入) -->
+<div id="name-modal">
+  <div id="name-content">
+    <h2 class="text-2xl heart-title mb-2">欢迎来到专属菜单 💕</h2>
+    <p class="text-sm mb-4" style="color:#b07890">请告诉我你的昵称，以后点单就能认出你啦～</p>
+    <input id="name-input" placeholder="比如：杨梅、大厨..." class="mb-4" maxlength="10">
+    <button class="btn-cute w-full" onclick="saveName()">开启美味之旅 💖</button>
+  </div>
+</div>
+
 <!-- 全屏精美居中 Toast (自己操作时) -->
 <div id="toast-modal" onclick="hideModalToast()">
   <div id="toast-content">
@@ -290,7 +324,7 @@ tailwind.config = {
 <div id="notify-modal">
   <div id="notify-content">
     <span id="notify-icon">💌</span>
-    <div id="notify-message">你的专属大厨接单啦！</div>
+    <div id="notify-message">对方点单啦！</div>
     <div id="notify-sub">快去点餐台看看吧～</div>
     <button id="notify-close-btn" onclick="closeNotifyModal()">知道啦 💕</button>
   </div>
@@ -304,7 +338,9 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 
 const CATE_ORDER = ['荤菜', '素菜', '汤品', '主食', '甜品', '酒水'];
 
-// 自己点单确认（30条，3秒自动消失）
+let currentUserName = localStorage.getItem('yangmei_user_name') || null;
+
+// 提醒语
 const selfConfirmQuotes = [
   "只要是你点的，我都做给你吃 🍳", "今天也是爱你的一天 💕", "你想吃的，就是世界上最好的美味 ✨",
   "大厨已就位，随时准备投喂 🥰", "爱意藏在每一顿饭菜里 🍲", "希望你每天都能吃得开心 🍰",
@@ -318,9 +354,8 @@ const selfConfirmQuotes = [
   "这一餐，是我们的小确幸 🌈", "快来吧，饭菜要凉啦 🍲", "你的专属点餐员已上线 📋"
 ];
 
-// 对方点单提醒（10条，手动关闭）
 const partnerNotifyQuotes = [
-  "专属大厨该去接单啦！", "小馋猫已下单，快去投喂吧！", "有人点菜啦，快去露一手！",
+  "专属大厨快来接单啦！", "小馋猫已下单，快去投喂吧！", "有人点菜啦，快去露一手！",
   "你的食客已就位，请开始表演！", "爱意订单已送达，请查收！", "你的小可爱饿了，快去做饭！",
   "接单成功，请速速前往厨房！", "有人想尝尝你的手艺啦！", "订单已来，大厨请准备！",
   "你的专属食客已下单！"
@@ -335,21 +370,35 @@ let syncTimeout = null;
 let isUploading = false;
 let isEditingNote = false;
 let currentRandomResult = null;
+let isCheckingUnread = false; // 防止重复检查未读消息
 
-// 自己操作 Toast (自动消失)
+// ============ 昵称相关 ============
+function checkUserName() {
+  if (!currentUserName) {
+    document.getElementById("name-modal").classList.add("show");
+    document.getElementById("name-input").focus();
+  }
+}
+
+function saveName() {
+  const name = document.getElementById("name-input").value.trim();
+  if (!name) { alert("请输入昵称哦～"); return; }
+  currentUserName = name;
+  localStorage.setItem('yangmei_user_name', name);
+  document.getElementById("name-modal").classList.remove("show");
+  showToast(`欢迎回来，${name}！`, "🥰");
+}
+
+// ============ 弹框通用方法 ============
 function showToast(message, icon = "💕") {
   const modal = document.getElementById("toast-modal");
   const msgEl = document.getElementById("toast-message");
   const iconEl = document.getElementById("toast-icon");
-  
   msgEl.innerText = message;
   iconEl.innerText = icon;
   modal.classList.add("show");
-  
   clearTimeout(window.toastTimer);
-  window.toastTimer = setTimeout(() => {
-    modal.classList.remove("show");
-  }, 3000);
+  window.toastTimer = setTimeout(() => { modal.classList.remove("show"); }, 3000);
 }
 
 function hideModalToast() {
@@ -357,7 +406,6 @@ function hideModalToast() {
   clearTimeout(window.toastTimer);
 }
 
-// 对方点单提醒弹框 (手动关闭，支持自定义内容)
 function showNotifyModal(message, subText) {
   const msgEl = document.getElementById("notify-message");
   const subEl = document.getElementById("notify-sub");
@@ -370,7 +418,7 @@ function closeNotifyModal() {
   document.getElementById("notify-modal").classList.remove("show");
 }
 
-// ============ 统一排序逻辑 ============
+// ============ 排序 ============
 function sortRecipes(list) {
   return list.sort((a, b) => {
     const indexA = CATE_ORDER.indexOf(a.cate);
@@ -400,6 +448,13 @@ async function loadAllData(retryCount = 0) {
 
     renderOrderList();
     renderOrderPreview();
+    
+    // 在数据加载完成后，检查是否有未读的点单提醒
+    if (!isCheckingUnread) {
+      isCheckingUnread = true;
+      await checkUnreadNotifications();
+    }
+    
     initRealtime();
     
   } catch (e) {
@@ -414,7 +469,38 @@ async function loadAllData(retryCount = 0) {
   }
 }
 
-// ============ 获取历史订单总数（用于里程碑判断） ============
+// ============ 检查未读点单提醒（离线补偿） ============
+async function checkUnreadNotifications() {
+  try {
+    // 查询最近一条未读，且不是自己点单的记录
+    const { data: unreadData, error } = await supabaseClient
+      .from('daily_menu')
+      .select('*')
+      .eq('is_read', false)
+      .neq('orderer', currentUserName)
+      .order('order_time', { ascending: false })
+      .limit(1);
+
+    if (error) throw error;
+
+    if (unreadData && unreadData.length > 0) {
+      const record = unreadData[0];
+      // 弹出补偿提醒
+      const randomMsg = partnerNotifyQuotes[Math.floor(Math.random() * partnerNotifyQuotes.length)];
+      showNotifyModal(`${record.orderer} ${randomMsg}`, "Ta 在你不在的时候点了一份菜单～");
+      
+      // 标记为已读
+      await supabaseClient
+        .from('daily_menu')
+        .update({ is_read: true })
+        .eq('id', record.id);
+    }
+  } catch (e) {
+    console.error("检查未读消息失败", e);
+  }
+}
+
+// ============ 获取历史总数 ============
 async function getOrderCount() {
   const { count, error } = await supabaseClient
     .from('daily_menu')
@@ -423,7 +509,7 @@ async function getOrderCount() {
   return count || 0;
 }
 
-// ============ Realtime 实时同步引擎 ============
+// ============ Realtime 实时同步 ============
 function initRealtime() {
   supabaseClient
     .channel('schema-db-changes')
@@ -443,32 +529,24 @@ function initRealtime() {
       'postgres_changes',
       { event: 'INSERT', schema: 'public', table: 'daily_menu' },
       async (payload) => {
-        // 刷新历史列表
         if (!document.getElementById("page-history").classList.contains("hidden")) {
           renderHistoryList();
         }
 
-        // 判断是否是自己刚点的单
-        const isSelfTriggered = sessionStorage.getItem('selfOrderTimestamp');
-        const now = Date.now();
-        if (isSelfTriggered && (now - parseInt(isSelfTriggered)) < 10000) {
-          sessionStorage.removeItem('selfOrderTimestamp');
-          return;
-        }
-
-        // 获取历史总数，判断是否为里程碑（10的倍数）
-        const totalCount = await getOrderCount();
+        const newRecord = payload.new;
         
-        if (totalCount > 0 && totalCount % 10 === 0) {
-          // 里程碑专属提醒
-          const milestoneMsg = `你们已经一起点了 ${totalCount} 顿饭啦！`;
-          const milestoneSub = `要继续好好吃饭，一直在一起哦 💕`;
-          showNotifyModal(milestoneMsg, milestoneSub);
-        } else {
-          // 普通对方点单提醒（10条随机）
-          const randomMsg = partnerNotifyQuotes[Math.floor(Math.random() * partnerNotifyQuotes.length)];
-          showNotifyModal(randomMsg, "快去点餐台看看吧～");
-        }
+        // 如果点单人就是自己，不提醒
+        if (newRecord.orderer === currentUserName) return;
+
+        // 对方点单，实时弹窗
+        const randomMsg = partnerNotifyQuotes[Math.floor(Math.random() * partnerNotifyQuotes.length)];
+        showNotifyModal(`${newRecord.orderer} ${randomMsg}`, "快去点餐台看看吧～");
+        
+        // 实时提醒后，标记为已读（避免下次打开再弹）
+        await supabaseClient
+          .from('daily_menu')
+          .update({ is_read: true })
+          .eq('id', newRecord.id);
       }
     )
     .subscribe();
@@ -699,11 +777,16 @@ function renderOrderPreview(){
 
 async function generateOrder(){
   if(cart.items.length === 0) { showToast("还没有点菜哦，去上面选几道吧～"); return; }
-  const q = selfConfirmQuotes[Math.floor(Math.random() * selfConfirmQuotes.length)];
-  showToast(q);
   
-  // 标记这是自己点的，防止自己也被提醒
-  sessionStorage.setItem('selfOrderTimestamp', Date.now().toString());
+  const totalCount = await getOrderCount();
+  
+  if (totalCount > 0 && totalCount % 10 === 0) {
+    const msg = `你们已经一起点了 ${totalCount} 顿饭啦！要继续好好吃饭，一直在一起哦 💕`;
+    showToast(msg, "🎉");
+  } else {
+    const q = selfConfirmQuotes[Math.floor(Math.random() * selfConfirmQuotes.length)];
+    showToast(q);
+  }
 
   const note = document.getElementById("orderNote").value.trim();
   const snapshot = cart.items.map(i => {
@@ -711,7 +794,13 @@ async function generateOrder(){
     return r ? { id: r.id, name: r.name, img: r.img, cate: r.cate, qty: i.qty } : null;
   }).filter(Boolean);
 
-  await supabaseClient.from('daily_menu').insert([{ note: note, items: snapshot }]);
+  await supabaseClient.from('daily_menu').insert([{ 
+    note: note, 
+    items: snapshot, 
+    orderer: currentUserName, 
+    is_read: false 
+  }]);
+  
   await supabaseClient.from('cart').update({ items: [], note: '', updated_at: new Date().toISOString() }).eq('id', 1);
   
   cart.items = [];
@@ -783,6 +872,7 @@ async function renderHistoryList(){
     div.innerHTML = `
       <div class="text-lg heart-title mb-3 flex justify-between items-center border-b-2 border-dashed border-pink-200 pb-2">
         <span>📅 ${timeStr}</span>
+        <span class="text-sm" style="color:#b07890;">👤 ${record.orderer || '某位小可爱'}</span>
       </div>
       <div class="grid md:grid-cols-2 gap-2">${itemsHtml}</div>
       ${record.note ? `<div class="text-sm mt-3" style="color:#b07890; background:#FFF4B8; padding:10px; border-radius:10px;">📝 备注：${record.note}</div>` : ''}
@@ -855,10 +945,15 @@ function pickRandom(){
 async function submitRandomOrder(){
   if(!currentRandomResult || currentRandomResult.length === 0) return;
   
-  const q = selfConfirmQuotes[Math.floor(Math.random() * selfConfirmQuotes.length)];
-  showToast(q);
-
-  sessionStorage.setItem('selfOrderTimestamp', Date.now().toString());
+  const totalCount = await getOrderCount();
+  
+  if (totalCount > 0 && totalCount % 10 === 0) {
+    const msg = `你们已经一起点了 ${totalCount} 顿饭啦！要继续好好吃饭，一直在一起哦 💕`;
+    showToast(msg, "🎉");
+  } else {
+    const q = selfConfirmQuotes[Math.floor(Math.random() * selfConfirmQuotes.length)];
+    showToast(q);
+  }
 
   const note = "（随机点单）" + (document.getElementById("orderNote").value.trim() || "");
   
@@ -866,7 +961,12 @@ async function submitRandomOrder(){
     return { id: r.id, name: r.name, img: r.img, cate: r.cate, qty: 1 };
   });
 
-  await supabaseClient.from('daily_menu').insert([{ note: note, items: snapshot }]);
+  await supabaseClient.from('daily_menu').insert([{ 
+    note: note, 
+    items: snapshot, 
+    orderer: currentUserName, 
+    is_read: false 
+  }]);
   
   document.getElementById("randResult").innerHTML = "";
   document.getElementById("randomSubmitArea").classList.add("hidden");
@@ -875,7 +975,7 @@ async function submitRandomOrder(){
   setTimeout(() => { switchTab('history'); }, 3000);
 }
 
-// ============ UI 交互与 Tab 切换 ============
+// ============ UI 交互 ============
 function switchTab(name){
   document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
   document.getElementById("page-"+name).classList.remove("hidden");
@@ -915,8 +1015,12 @@ window.submitRandomOrder = submitRandomOrder;
 window.uploadImage = uploadImage;
 window.hideModalToast = hideModalToast;
 window.closeNotifyModal = closeNotifyModal;
+window.saveName = saveName;
 
-window.onload = () => loadAllData();
+window.onload = () => {
+  checkUserName();
+  loadAllData();
+};
 </script>
 </body>
 </html>
