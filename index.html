@@ -52,14 +52,46 @@ tailwind.config = {
   .filter-btn { background: #fff; border: 2px solid #FFE0EC; border-radius: 999px; padding: 5px 14px; font-size: 0.85rem; color: #b07890; cursor: pointer; transition: all 0.2s; }
   .filter-btn.active { background: #FFE0EC; color: #E67A7A; border-color: #FFB6C8; font-weight: bold; }
   
-  /* 美化文件上传按钮 */
   .upload-btn-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
   .upload-btn-wrapper input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
   .upload-btn { border: 2px dashed #F2C4CE; color: #E67A7A; background-color: #FFF7F1; padding: 12px; border-radius: 12px; font-size: 0.95rem; text-align: center; width: 100%; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'ZCOOL KuaiLe', sans-serif; cursor: pointer; }
   .upload-btn:hover { background-color: #FFE0EC; border-color: #FFB6C8; }
 
-  #toast { visibility: hidden; min-width: 250px; background: linear-gradient(135deg, #E67A7A, #FFB6C8); color: #fff; text-align: center; border-radius: 16px; padding: 16px 24px; position: fixed; z-index: 999; left: 50%; bottom: 30px; transform: translateX(-50%) translateY(20px); font-size: 1rem; box-shadow: 0 10px 30px rgba(230, 122, 122, 0.4); border: 3px solid #fff; opacity: 0; transition: opacity 0.3s, transform 0.3s, visibility 0.3s; font-family: 'Ma Shan Zheng', cursive; }
-  #toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+  /* 全屏居中 Modal Toast 设计 */
+  #toast-modal {
+    visibility: hidden; opacity: 0;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 238, 242, 0.45);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  #toast-modal.show { visibility: visible; opacity: 1; }
+  #toast-content {
+    background: linear-gradient(135deg, #ffffff, #FFF7F1);
+    border: 3px dashed #FFB6C8;
+    padding: 30px 40px; border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(230, 122, 122, 0.3), inset 0 0 20px rgba(255, 214, 224, 0.3);
+    text-align: center;
+    transform: scale(0.7) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 85%; position: relative;
+  }
+  #toast-modal.show #toast-content { transform: scale(1) translateY(0); }
+  #toast-content::before {
+    content: "💖"; position: absolute; top: -18px; left: 50%;
+    transform: translateX(-50%); background: #FFD1E0;
+    padding: 4px 12px; border-radius: 20px; font-size: 20px;
+    border: 2px solid #fff; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.2);
+  }
+  #toast-message {
+    font-family: 'Ma Shan Zheng', cursive; font-size: 1.6rem;
+    color: #E67A7A; line-height: 1.6; letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(230, 122, 122, 0.1);
+  }
+  #toast-icon { font-size: 3rem; margin-bottom: 15px; display: block; animation: heartBeat 1.5s infinite; }
+  @keyframes heartBeat { 0% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } 70% { transform: scale(1); } }
   ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: #FFB6C8; border-radius: 4px; }
 </style>
 </head>
@@ -121,6 +153,11 @@ tailwind.config = {
         <button class="btn-cute" onclick="pickRandom()">🎲 开始随机点单</button>
       </div>
       <div id="randResult" class="mt-5"></div>
+      
+      <!-- 随机结果的确认提交按钮（默认隐藏） -->
+      <div id="randomSubmitArea" class="mt-4 hidden text-center">
+         <button class="btn-cute w-full md:w-auto" id="randomSubmitBtn" onclick="submitRandomOrder()">💖 确认提交这份点餐单</button>
+      </div>
     </div>
   </div>
 
@@ -161,7 +198,6 @@ tailwind.config = {
         </div>
         <div>
           <label class="text-sm">上传图片</label>
-          <!-- 美化后的上传按钮 -->
           <div class="upload-btn-wrapper">
             <button class="upload-btn">📷 点击选择图片</button>
             <input type="file" id="rimg-file" accept="image/*" onchange="uploadImage()">
@@ -195,7 +231,13 @@ tailwind.config = {
   </div>
 </div>
 
-<div id="toast"></div>
+<!-- 全局精美居中 Toast -->
+<div id="toast-modal" onclick="hideModalToast()">
+  <div id="toast-content">
+    <span id="toast-icon">💕</span>
+    <div id="toast-message">加载中...</div>
+  </div>
+</div>
 
 <script>
 // ============ Supabase 配置 ============
@@ -203,10 +245,18 @@ const SUPABASE_URL = "https://walbapquafqibcqdhazq.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_P3OMyZLQbYGHLrbrOVXEdw_cLD4Livn";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+const CATE_ORDER = ['荤菜', '素菜', '汤品', '主食', '甜品', '酒水'];
+
 const loveQuotes = [
-  "只要是你点的，我都做给你吃 🍳", "今天也是爱杨梅的一天 💕", "杨梅想吃的，就是世界上最好的美味 ✨",
-  "大厨已就位，随时准备投喂 🥰", "爱意藏在每一顿饭菜里 🍲", "希望杨梅每天都能吃得开心 🍰",
-  "把你喂胖，就没人能抢走你啦 🐷", "你想吃的，我都会学 🌟", "有杨梅在，粗茶淡饭也是山珍海味 💖"
+  { text: "只要是你点的，我都做给你吃 🍳", icon: "🍳" },
+  { text: "今天也是爱杨梅的一天 💕", icon: "💕" },
+  { text: "杨梅想吃的，就是世界上最好的美味 ✨", icon: "✨" },
+  { text: "大厨已就位，随时准备投喂 🥰", icon: "🥰" },
+  { text: "爱意藏在每一顿饭菜里 🍲", icon: "🍲" },
+  { text: "希望杨梅每天都能吃得开心 🍰", icon: "🍰" },
+  { text: "把你喂胖，就没人能抢走你啦 🐷", icon: "🐷" },
+  { text: "你想吃的，我都会学 🌟", icon: "🌟" },
+  { text: "有杨梅在，粗茶淡饭也是山珍海味 💖", icon: "💖" }
 ];
 
 let recipes = [];
@@ -215,20 +265,45 @@ let filterCategory = "全部";
 let orderFilterCategory = "全部";
 let editDocId = null;
 let syncTimeout = null;
-let isUploading = false; // 图片上传状态锁
-let isEditingNote = false; // 备注编辑状态锁（防止Realtime打断输入）
+let isUploading = false;
+let isEditingNote = false;
+let currentRandomResult = null; // 用于记录随机抽取的结果
 
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  toast.innerText = message;
-  toast.className = "show";
-  setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
+// 新的全屏居中弹框函数
+function showToast(message, icon = "💕") {
+  const modal = document.getElementById("toast-modal");
+  const msgEl = document.getElementById("toast-message");
+  const iconEl = document.getElementById("toast-icon");
+  
+  msgEl.innerText = message;
+  iconEl.innerText = icon;
+  modal.classList.add("show");
+  
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => {
+    modal.classList.remove("show");
+  }, 3000); // 3秒自动消失
+}
+
+function hideModalToast() {
+  document.getElementById("toast-modal").classList.remove("show");
+  clearTimeout(window.toastTimer);
+}
+
+// ============ 统一排序逻辑 ============
+function sortRecipes(list) {
+  return list.sort((a, b) => {
+    const indexA = CATE_ORDER.indexOf(a.cate);
+    const indexB = CATE_ORDER.indexOf(b.cate);
+    if (indexA === indexB) return b.id - a.id;
+    return indexA - indexB;
+  });
 }
 
 // ============ 核心数据拉取 ============
 async function loadAllData() {
   try {
-    const { data: recipeData, error: recipeErr } = await supabaseClient.from('recipes').select('*').order('created_at', { ascending: false });
+    const { data: recipeData, error: recipeErr } = await supabaseClient.from('recipes').select('*');
     if (recipeErr) throw recipeErr;
     recipes = recipeData || [];
 
@@ -236,21 +311,20 @@ async function loadAllData() {
     if (cartErr) throw cartErr;
     cart = cartData || { items: [], note: '' };
     
-    // 只有当用户没有在输入备注时，才从云端覆盖输入框内容
     if (!isEditingNote) {
       document.getElementById("orderNote").value = cart.note || '';
     }
 
     renderAll();
     renderOrderPreview();
-    initRealtime(); // 加载完数据后启动实时监听
+    initRealtime();
   } catch (e) {
     console.error("加载数据失败", e);
     document.getElementById("db-status").innerText = "⚠️ 云端读取失败，请检查网络或数据库配置";
   }
 }
 
-// ============ Supabase Realtime 实时同步引擎 ============
+// ============ Realtime 实时同步引擎 ============
 function initRealtime() {
   supabaseClient
     .channel('schema-db-changes')
@@ -258,21 +332,18 @@ function initRealtime() {
       'postgres_changes',
       { event: 'UPDATE', schema: 'public', table: 'cart', filter: 'id=eq.1' },
       (payload) => {
-        // 收到对方的修改，更新本地状态并重新渲染
         cart = payload.new;
         if (!isEditingNote) {
           document.getElementById("orderNote").value = cart.note || '';
         }
         renderOrderList();
         renderOrderPreview();
-        // 不弹Toast打扰，安静地刷新即可
       }
     )
     .on(
       'postgres_changes',
       { event: 'INSERT', schema: 'public', table: 'daily_menu' },
       (payload) => {
-        // 如果对方生成了点单，刷新历史列表（如果当前在历史页）
         if (!document.getElementById("page-history").classList.contains("hidden")) {
           renderHistoryList();
         }
@@ -291,11 +362,9 @@ async function uploadImage() {
   const status = document.getElementById("upload-status");
   const saveBtn = document.getElementById("save-recipe-btn");
   
-  // 1. 本地瞬间预览（毫秒级）
   preview.src = URL.createObjectURL(file);
   preview.classList.remove("hidden");
 
-  // 2. 锁定保存按钮
   isUploading = true;
   saveBtn.disabled = true;
   saveBtn.innerText = "⏳ 图片上传中...";
@@ -307,18 +376,15 @@ async function uploadImage() {
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
     const { error } = await supabaseClient.storage.from('recipe-images').upload(fileName, file);
     if (error) throw error;
-
     const { data: urlData } = supabaseClient.storage.from('recipe-images').getPublicUrl(fileName);
     document.getElementById("rimg").value = urlData.publicUrl;
     document.getElementById("rimg-url").value = urlData.publicUrl;
-    
     status.innerText = "✅ 图片上传成功！";
     status.className = "text-xs mt-2 font-bold text-green-500";
   } catch (err) {
-    status.innerText = "❌ 上传失败：" + err.message + "（请手动粘贴链接）";
+    status.innerText = "❌ 上传失败：" + err.message;
     status.className = "text-xs mt-2 font-bold text-red-400";
   } finally {
-    // 3. 无论成功失败，解锁按钮
     isUploading = false;
     saveBtn.disabled = false;
     saveBtn.innerText = "💾 保存菜谱";
@@ -327,7 +393,6 @@ async function uploadImage() {
 
 async function saveRecipe(){
   if (isUploading) { showToast("图片还在上传中，请稍等哦～"); return; }
-  
   const name = document.getElementById("rname").value.trim();
   if(!name){ showToast("菜名不能为空哦 😳"); return; }
   
@@ -346,7 +411,7 @@ async function saveRecipe(){
     if(error) { showToast("云端保存失败"); return; }
   }
   
-  showToast("已保存到云端啦 💗");
+  showToast("已保存到云端啦 💗", "🎉");
   editDocId = null;
   clearForm();
   loadAllData();
@@ -374,6 +439,8 @@ function clearForm(){
 function renderRecipeList(){
   const wrap = document.getElementById("recipeList");
   let list = filterCategory==="全部" ? recipes : recipes.filter(r=>r.cate===filterCategory);
+  list = sortRecipes(list);
+
   wrap.innerHTML = list.length === 0 ? '<p class="text-center text-sm col-span-2" style="color:#b07890">还没有菜谱，快去添加吧～</p>' : '';
   
   list.forEach(r=>{
@@ -429,6 +496,8 @@ function renderOrderList(){
   const wrap = document.getElementById("orderList");
   wrap.innerHTML = "";
   let list = orderFilterCategory === "全部" ? recipes : recipes.filter(r => r.cate === orderFilterCategory);
+  list = sortRecipes(list);
+
   if(list.length === 0) { wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">这个分类下还没有菜品哦～</p>'; return; }
 
   list.forEach(r=>{
@@ -504,8 +573,8 @@ function renderOrderPreview(){
 
 async function generateOrder(){
   if(cart.items.length === 0) { showToast("还没有点菜哦，去上面选几道吧～"); return; }
-  
-  showToast(loveQuotes[Math.floor(Math.random() * loveQuotes.length)]);
+  const q = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
+  showToast(q.text, q.icon);
   
   const note = document.getElementById("orderNote").value.trim();
   const snapshot = cart.items.map(i => {
@@ -531,7 +600,7 @@ async function clearOrder(){
   document.getElementById("orderNote").value = '';
   renderOrderList();
   renderOrderPreview();
-  showToast("已清空点餐车");
+  showToast("已清空点餐车", "🧹");
 }
 
 function copyOrderText(){
@@ -545,10 +614,10 @@ function copyOrderText(){
   text += `\n大厨，今天就拜托你啦！💕`;
 
   navigator.clipboard.writeText(text).then(() => {
-    showToast("点餐单已复制！快发给大厨吧 💗");
+    showToast("点餐单已复制！快发给大厨吧", "📋");
   }).catch(() => {
     const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
-    showToast("点餐单已复制！快发给大厨吧 💗");
+    showToast("点餐单已复制！快发给大厨吧", "📋");
   });
 }
 
@@ -593,18 +662,90 @@ async function renderHistoryList(){
   });
 }
 
-// ============ 随机点菜 ============
+// ============ 随机点菜 (加权算法) ============
 function pickRandom(){
   const num = Number(document.getElementById("randNum").value);
   const wrap = document.getElementById("randResult");
-  if(recipes.length ===0){ wrap.innerHTML = `<p>菜谱库是空的，先给杨梅加几道菜吧～</p>`; return; }
-  const copy = [...recipes].sort(()=>Math.random()-0.5).slice(0,num);
+  
+  const eligible = recipes.filter(r => ['荤菜', '素菜', '汤品'].includes(r.cate));
+  if(eligible.length === 0){ 
+    wrap.innerHTML = `<p>没有可供随机的主菜，先去添加一些荤素菜吧～</p>`; 
+    document.getElementById("randomSubmitArea").classList.add("hidden");
+    currentRandomResult = null;
+    return; 
+  }
+
+  const meats = eligible.filter(r => r.cate === '荤菜');
+  const veggies = eligible.filter(r => r.cate === '素菜');
+  const soups = eligible.filter(r => r.cate === '汤品');
+  const shuffle = (array) => array.sort(() => Math.random() - 0.5);
+
+  let meatCount = Math.round(num * 2 / 3);
+  let vegCount = num - meatCount;
+
+  let result = [];
+  let shuffledMeats = shuffle([...meats]);
+  let selectedMeats = shuffledMeats.slice(0, meatCount);
+  result.push(...selectedMeats);
+  
+  let shuffledVeggies = shuffle([...veggies]);
+  let selectedVeggies = shuffledVeggies.slice(0, vegCount);
+  result.push(...selectedVeggies);
+
+  if(result.length < num) {
+    let remainingMeats = shuffledMeats.slice(selectedMeats.length);
+    if(remainingMeats.length >= (num - result.length)) {
+        result.push(...remainingMeats.slice(0, num - result.length));
+    } else {
+        result.push(...remainingMeats);
+        let remainingVeggies = shuffledVeggies.slice(selectedVeggies.length);
+        result.push(...remainingVeggies.slice(0, num - result.length));
+    }
+  } else if (result.length > num) {
+     result = result.slice(0, num);
+  }
+
+  if(soups.length > 0 && Math.random() > 0.5) {
+      const randomSoup = soups[Math.floor(Math.random() * soups.length)];
+      result.push(randomSoup);
+  }
+
+  result = shuffle(result);
+  currentRandomResult = result;
+
   let html = `<div class="hand-border"><div class="text-lg heart-title mb-3">🎲 今日幸运菜单</div>`;
-  copy.forEach((r,i)=>{
-    html += `<div class="mb-2">${i+1}. ${r.name} <span class="sticker-tag ${r.cate === '甜品' ? 'sweet' : r.cate === '酒水' ? 'drink' : 'peach'}" style="font-size:12px">${r.cate}</span></div>`;
+  result.forEach((r,i)=>{
+    html += `<div class="mb-2">${i+1}. ${r.name} <span class="sticker-tag ${r.cate === '汤品' ? 'sweet' : 'peach'}" style="font-size:12px">${r.cate}</span></div>`;
   });
   html += `<div class="text-sm mt-3" style="color:#b07890">是不是杨梅爱吃的那几道呢？💕</div></div>`;
   wrap.innerHTML = html;
+  
+  // 展示确认提交按钮
+  document.getElementById("randomSubmitArea").classList.remove("hidden");
+}
+
+// 提交随机点单（点击按钮后才触发，弹窗由点击触发）
+async function submitRandomOrder(){
+  if(!currentRandomResult || currentRandomResult.length === 0) return;
+  
+  const q = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
+  showToast(q.text, q.icon); // 全屏情话弹窗
+
+  const note = "（随机点单）" + (document.getElementById("orderNote").value.trim() || "");
+  
+  const snapshot = currentRandomResult.map(r => {
+    return { id: r.id, name: r.name, img: r.img, cate: r.cate, qty: 1 };
+  });
+
+  await supabaseClient.from('daily_menu').insert([{ note: note, items: snapshot }]);
+  
+  // 清空随机页面
+  document.getElementById("randResult").innerHTML = "";
+  document.getElementById("randomSubmitArea").classList.add("hidden");
+  currentRandomResult = null;
+  
+  // 3秒后自动跳转到历史记录
+  setTimeout(() => { switchTab('history'); }, 3000);
 }
 
 // ============ UI 交互与 Tab 切换 ============
@@ -615,7 +756,11 @@ function switchTab(name){
   document.getElementById("tab-"+name).classList.add("active");
   
   if(name==="order") { renderOrderList(); }
-  if(name==="random") document.getElementById("randResult").innerHTML = '';
+  if(name==="random") { 
+    document.getElementById("randResult").innerHTML = ''; 
+    document.getElementById("randomSubmitArea").classList.add("hidden"); 
+    currentRandomResult = null; 
+  }
   if(name==="history") renderHistoryList();
   if(name==="library") renderRecipeList();
 }
@@ -639,7 +784,9 @@ window.generateOrder = generateOrder;
 window.clearOrder = clearOrder;
 window.copyOrderText = copyOrderText;
 window.pickRandom = pickRandom;
+window.submitRandomOrder = submitRandomOrder;
 window.uploadImage = uploadImage;
+window.hideModalToast = hideModalToast;
 
 window.onload = loadAllData;
 </script>
