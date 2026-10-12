@@ -32,8 +32,9 @@ tailwind.config = {
   .sticker-tag { display: inline-block; padding: 3px 10px; border-radius: 10px; font-family: 'Ma Shan Zheng', cursive; background: #FFD1E0; color: #fff; transform: rotate(-2deg); box-shadow: 0 2px 4px rgba(230, 122, 122, 0.25); margin-right: 6px; margin-bottom: 4px; font-size: 13px; }
   .sticker-tag.peach { background: #FFBFA3; } .sticker-tag.lemon { background: #F2D166; color: #7a5b30; } .sticker-tag.berry { background: #E67A7A; } .sticker-tag.sweet { background: #A8E6CF; color: #3B7A57; } .sticker-tag.drink { background: #D4C4FB; color: #5B3E96; }
   .heart-title { font-family: 'Ma Shan Zheng', cursive; background: linear-gradient(90deg, #E67A7A, #FFBFA3); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .btn-cute { background: linear-gradient(180deg, #FFD1E0, #FFB6C8); color: #fff; border: 2px solid #fff; border-radius: 999px; padding: 10px 18px; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.3); transition: transform .15s ease; }
-  .btn-cute:hover { transform: translateY(-2px) scale(1.03); }
+  .btn-cute { background: linear-gradient(180deg, #FFD1E0, #FFB6C8); color: #fff; border: 2px solid #fff; border-radius: 999px; padding: 10px 18px; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.3); transition: all .2s ease; }
+  .btn-cute:hover:not(:disabled) { transform: translateY(-2px) scale(1.03); }
+  .btn-cute:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
   .btn-soft { background: #FFF4B8; color: #7a5b30; border: 2px solid #fff; border-radius: 999px; padding: 8px 14px; box-shadow: 0 3px 8px rgba(242, 209, 102, 0.35); transition: transform .15s; }
   .btn-soft:active { transform: scale(0.95); }
   .btn-pink { background: #FFB6C8; color: #fff; border: 2px solid #fff; border-radius: 999px; padding: 8px 14px; transition: transform .15s; }
@@ -51,6 +52,12 @@ tailwind.config = {
   .filter-btn { background: #fff; border: 2px solid #FFE0EC; border-radius: 999px; padding: 5px 14px; font-size: 0.85rem; color: #b07890; cursor: pointer; transition: all 0.2s; }
   .filter-btn.active { background: #FFE0EC; color: #E67A7A; border-color: #FFB6C8; font-weight: bold; }
   
+  /* 美化文件上传按钮 */
+  .upload-btn-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
+  .upload-btn-wrapper input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
+  .upload-btn { border: 2px dashed #F2C4CE; color: #E67A7A; background-color: #FFF7F1; padding: 12px; border-radius: 12px; font-size: 0.95rem; text-align: center; width: 100%; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'ZCOOL KuaiLe', sans-serif; cursor: pointer; }
+  .upload-btn:hover { background-color: #FFE0EC; border-color: #FFB6C8; }
+
   #toast { visibility: hidden; min-width: 250px; background: linear-gradient(135deg, #E67A7A, #FFB6C8); color: #fff; text-align: center; border-radius: 16px; padding: 16px 24px; position: fixed; z-index: 999; left: 50%; bottom: 30px; transform: translateX(-50%) translateY(20px); font-size: 1rem; box-shadow: 0 10px 30px rgba(230, 122, 122, 0.4); border: 3px solid #fff; opacity: 0; transition: opacity 0.3s, transform 0.3s, visibility 0.3s; font-family: 'Ma Shan Zheng', cursive; }
   #toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
   ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: #FFB6C8; border-radius: 4px; }
@@ -73,7 +80,7 @@ tailwind.config = {
   <div id="page-order" class="page">
     <div class="tape-card mb-4">
       <div class="tape peach">🛒 双人共享点餐台</div>
-      <div class="text-sm mt-2 mb-3" style="color:#b07890">🍰 两人共享同一购物车，加减菜品自动同步！</div>
+      <div class="text-sm mt-2 mb-3" style="color:#b07890">🍰 两人共享同一购物车，加减菜品实时同步！</div>
       
       <div class="flex flex-wrap gap-2 mb-4" id="orderFilterContainer">
         <button class="filter-btn active" onclick="filterOrderCate('全部', this)">全部</button>
@@ -89,7 +96,7 @@ tailwind.config = {
       
       <div class="mt-5">
         <label class="text-sm">给大厨的备注：</label>
-        <input id="orderNote" placeholder="输入备注会自动同步到对方屏幕哦..." oninput="debouncedSyncCart()">
+        <input id="orderNote" placeholder="输入备注会自动同步到对方屏幕哦..." oninput="debouncedSyncCart()" onfocus="isEditingNote = true" onblur="isEditingNote = false">
       </div>
       <div class="mt-4 flex flex-wrap gap-2">
         <button class="btn-cute" onclick="generateOrder()">📝 生成点餐单</button>
@@ -154,9 +161,13 @@ tailwind.config = {
         </div>
         <div>
           <label class="text-sm">上传图片</label>
-          <input type="file" id="rimg-file" accept="image/*" onchange="uploadImage()" style="border-style:solid; padding:8px;">
+          <!-- 美化后的上传按钮 -->
+          <div class="upload-btn-wrapper">
+            <button class="upload-btn">📷 点击选择图片</button>
+            <input type="file" id="rimg-file" accept="image/*" onchange="uploadImage()">
+          </div>
           <input type="hidden" id="rimg">
-          <p id="upload-status" class="text-xs text-blue-500 mt-1"></p>
+          <p id="upload-status" class="text-xs mt-2 font-bold"></p>
           <img id="rimg-preview" class="mt-2 rounded hidden" style="max-height:100px; border:2px solid #FFD1E0;">
           <p class="text-xs mt-2" style="color:#b07890;">或者手动粘贴图片链接：</p>
           <input id="rimg-url" placeholder="https://..." oninput="document.getElementById('rimg').value = this.value">
@@ -164,7 +175,7 @@ tailwind.config = {
       </div>
       
       <div class="mt-5 flex flex-wrap gap-3">
-        <button class="btn-cute" onclick="saveRecipe()">💾 保存菜谱</button>
+        <button class="btn-cute" id="save-recipe-btn" onclick="saveRecipe()">💾 保存菜谱</button>
         <button class="btn-soft" onclick="clearForm()">🧹 清空表单</button>
       </div>
       <p id="db-status" class="text-xs mt-2 text-red-400"></p>
@@ -204,6 +215,8 @@ let filterCategory = "全部";
 let orderFilterCategory = "全部";
 let editDocId = null;
 let syncTimeout = null;
+let isUploading = false; // 图片上传状态锁
+let isEditingNote = false; // 备注编辑状态锁（防止Realtime打断输入）
 
 function showToast(message) {
   const toast = document.getElementById("toast");
@@ -212,29 +225,60 @@ function showToast(message) {
   setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
 }
 
-// ============ 核心数据拉取 (完全从云端读取) ============
+// ============ 核心数据拉取 ============
 async function loadAllData() {
   try {
-    // 1. 拉取菜谱
     const { data: recipeData, error: recipeErr } = await supabaseClient.from('recipes').select('*').order('created_at', { ascending: false });
     if (recipeErr) throw recipeErr;
     recipes = recipeData || [];
 
-    // 2. 拉取购物车
     const { data: cartData, error: cartErr } = await supabaseClient.from('cart').select('*').eq('id', 1).single();
     if (cartErr) throw cartErr;
     cart = cartData || { items: [], note: '' };
     
-    // 填充备注输入框
-    document.getElementById("orderNote").value = cart.note || '';
+    // 只有当用户没有在输入备注时，才从云端覆盖输入框内容
+    if (!isEditingNote) {
+      document.getElementById("orderNote").value = cart.note || '';
+    }
 
-    // 3. 渲染UI
     renderAll();
     renderOrderPreview();
+    initRealtime(); // 加载完数据后启动实时监听
   } catch (e) {
     console.error("加载数据失败", e);
     document.getElementById("db-status").innerText = "⚠️ 云端读取失败，请检查网络或数据库配置";
   }
+}
+
+// ============ Supabase Realtime 实时同步引擎 ============
+function initRealtime() {
+  supabaseClient
+    .channel('schema-db-changes')
+    .on(
+      'postgres_changes',
+      { event: 'UPDATE', schema: 'public', table: 'cart', filter: 'id=eq.1' },
+      (payload) => {
+        // 收到对方的修改，更新本地状态并重新渲染
+        cart = payload.new;
+        if (!isEditingNote) {
+          document.getElementById("orderNote").value = cart.note || '';
+        }
+        renderOrderList();
+        renderOrderPreview();
+        // 不弹Toast打扰，安静地刷新即可
+      }
+    )
+    .on(
+      'postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'daily_menu' },
+      (payload) => {
+        // 如果对方生成了点单，刷新历史列表（如果当前在历史页）
+        if (!document.getElementById("page-history").classList.contains("hidden")) {
+          renderHistoryList();
+        }
+      }
+    )
+    .subscribe();
 }
 
 // ============ 菜谱库操作 ============
@@ -242,29 +286,48 @@ async function uploadImage() {
   const fileInput = document.getElementById("rimg-file");
   const file = fileInput.files[0];
   if (!file) return;
+
   const preview = document.getElementById("rimg-preview");
+  const status = document.getElementById("upload-status");
+  const saveBtn = document.getElementById("save-recipe-btn");
+  
+  // 1. 本地瞬间预览（毫秒级）
   preview.src = URL.createObjectURL(file);
   preview.classList.remove("hidden");
-  const status = document.getElementById("upload-status");
+
+  // 2. 锁定保存按钮
+  isUploading = true;
+  saveBtn.disabled = true;
+  saveBtn.innerText = "⏳ 图片上传中...";
   status.innerText = "⏳ 正在上传图片到云端...";
+  status.className = "text-xs mt-2 font-bold text-blue-500";
 
   try {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
     const { error } = await supabaseClient.storage.from('recipe-images').upload(fileName, file);
     if (error) throw error;
+
     const { data: urlData } = supabaseClient.storage.from('recipe-images').getPublicUrl(fileName);
     document.getElementById("rimg").value = urlData.publicUrl;
     document.getElementById("rimg-url").value = urlData.publicUrl;
+    
     status.innerText = "✅ 图片上传成功！";
-    status.className = "text-xs text-green-500 mt-1";
+    status.className = "text-xs mt-2 font-bold text-green-500";
   } catch (err) {
-    status.innerText = "❌ 上传失败：" + err.message;
-    status.className = "text-xs text-red-400 mt-1";
+    status.innerText = "❌ 上传失败：" + err.message + "（请手动粘贴链接）";
+    status.className = "text-xs mt-2 font-bold text-red-400";
+  } finally {
+    // 3. 无论成功失败，解锁按钮
+    isUploading = false;
+    saveBtn.disabled = false;
+    saveBtn.innerText = "💾 保存菜谱";
   }
 }
 
 async function saveRecipe(){
+  if (isUploading) { showToast("图片还在上传中，请稍等哦～"); return; }
+  
   const name = document.getElementById("rname").value.trim();
   if(!name){ showToast("菜名不能为空哦 😳"); return; }
   
@@ -354,7 +417,7 @@ function editRecipe(id){
   switchTab('library');
 }
 
-// ============ 点餐台操作 (含云端同步) ============
+// ============ 点餐台操作 ============
 function filterOrderCate(c, btn){
   orderFilterCategory = c;
   document.querySelectorAll("#page-order .filter-btn").forEach(b => b.classList.remove("active"));
@@ -390,18 +453,14 @@ function renderOrderList(){
   });
 }
 
-// 乐观更新 + 防抖同步云端
 function changeQty(id, delta){
   let item = cart.items.find(i => i.id === id);
   if(!item) { item = { id: id, qty: 0 }; cart.items.push(item); }
   item.qty += delta;
   if(item.qty <= 0) cart.items = cart.items.filter(i => i.id !== id);
   
-  // 立即更新UI
   renderOrderList();
   renderOrderPreview();
-  
-  // 防抖 500ms 后同步到云端
   debouncedSyncCart();
 }
 
@@ -449,24 +508,19 @@ async function generateOrder(){
   showToast(loveQuotes[Math.floor(Math.random() * loveQuotes.length)]);
   
   const note = document.getElementById("orderNote").value.trim();
-  // 制作快照
   const snapshot = cart.items.map(i => {
     const r = recipes.find(x => x.id == i.id);
     return r ? { id: r.id, name: r.name, img: r.img, cate: r.cate, qty: i.qty } : null;
   }).filter(Boolean);
 
-  // 1. 写入历史记录
   await supabaseClient.from('daily_menu').insert([{ note: note, items: snapshot }]);
-
-  // 2. 清空云端购物车
   await supabaseClient.from('cart').update({ items: [], note: '', updated_at: new Date().toISOString() }).eq('id', 1);
   
-  // 3. 更新本地状态并刷新
   cart.items = [];
   document.getElementById("orderNote").value = '';
   renderOrderList();
   renderOrderPreview();
-  loadAllData(); // 重新拉取确保数据一致
+  loadAllData();
   document.getElementById("orderPreview").scrollIntoView({behavior:"smooth"});
 }
 
@@ -498,7 +552,7 @@ function copyOrderText(){
   });
 }
 
-// ============ 历史记录 (从云端读取) ============
+// ============ 历史记录 ============
 async function renderHistoryList(){
   const wrap = document.getElementById("historyList");
   wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">正在从云端拉取记录...</p>';
@@ -572,7 +626,6 @@ function renderAll(){
   renderOrderPreview();
 }
 
-// 绑定全局函数
 window.switchTab = switchTab;
 window.saveRecipe = saveRecipe;
 window.clearForm = clearForm;
