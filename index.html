@@ -56,71 +56,16 @@ tailwind.config = {
   <h1 class="text-4xl md:text-5xl text-center heart-title mt-3 mb-2">杨梅的家庭手账菜单</h1>
   <p class="text-center text-sm mb-4" style="color:#b07890">记录我们爱吃的菜，今天也要一起好好吃饭呀 💕</p>
   
+  <!-- 调整了Tab顺序 -->
   <div class="flex flex-wrap gap-2 justify-center mb-5">
-    <button class="tab-btn active" id="tab-library" onclick="switchTab('library')">📖 菜谱库</button>
-    <button class="tab-btn" id="tab-order" onclick="switchTab('order')">🛒 点餐台</button>
+    <button class="tab-btn active" id="tab-order" onclick="switchTab('order')">🛒 点餐台</button>
     <button class="tab-btn" id="tab-random" onclick="switchTab('random')">🎲 随机点单</button>
+    <button class="tab-btn" id="tab-history" onclick="switchTab('history')">📜 点单列表</button>
+    <button class="tab-btn" id="tab-library" onclick="switchTab('library')">📖 菜谱库</button>
   </div>
 
-  <!-- 菜谱库 -->
-  <div id="page-library" class="page">
-    <div class="tape-card mb-5">
-      <div class="tape lemon">添加一道杨梅爱吃的菜</div>
-      <input type="hidden" id="editId">
-      <div class="grid md:grid-cols-2 gap-3 mt-2">
-        <div><label class="text-sm">菜名 ♡</label><input id="rname" placeholder="比如：番茄炒蛋"></div>
-        <div>
-          <label class="text-sm">分类</label>
-          <select id="rcate">
-            <option value="荤菜">荤菜</option>
-            <option value="素菜">素菜</option>
-            <option value="汤品">汤品</option>
-            <option value="主食">主食</option>
-          </select>
-        </div>
-        <div>
-          <label class="text-sm">难度</label>
-          <select id="rdiff">
-            <option value="简单">简单</option>
-            <option value="中等">中等</option>
-            <option value="困难">困难</option>
-          </select>
-        </div>
-        
-        <!-- 图片上传区域（升级版） -->
-        <div>
-          <label class="text-sm">上传图片</label>
-          <input type="file" id="rimg-file" accept="image/*" onchange="uploadImage()" style="border-style:solid; padding:8px;">
-          <input type="hidden" id="rimg"> <!-- 用于存放实际链接 -->
-          <p id="upload-status" class="text-xs text-blue-500 mt-1"></p>
-          <img id="rimg-preview" class="mt-2 rounded hidden" style="max-height:100px; border:2px solid #FFD1E0;">
-          <p class="text-xs mt-1" style="color:#b07890;">或者手动粘贴图片链接：</p>
-          <input id="rimg-url" placeholder="https://..." oninput="document.getElementById('rimg').value = this.value">
-        </div>
-
-      </div>
-      <div class="mt-3"><label class="text-sm">食材（逗号分隔）</label><textarea id="ringre" rows="2" placeholder="鸡蛋, 番茄, 盐, 糖"></textarea></div>
-      <div class="mt-3"><label class="text-sm">做法</label><textarea id="rstep" rows="3" placeholder="简单写一下步骤就好啦"></textarea></div>
-      <div class="mt-4 flex flex-wrap gap-2">
-        <button class="btn-cute" onclick="saveRecipe()">💾 保存菜谱</button>
-        <button class="btn-soft" onclick="clearForm()">🧹 清空表单</button>
-      </div>
-      <p id="db-status" class="text-xs mt-2 text-red-400"></p>
-    </div>
-    
-    <div class="flex flex-wrap gap-2 mb-4">
-      <span class="text-sm" style="color:#b07890">分类筛选：</span>
-      <button class="sticker-tag" onclick="filterCate('全部')">全部</button>
-      <button class="sticker-tag peach" onclick="filterCate('荤菜')">荤菜</button>
-      <button class="sticker-tag lemon" onclick="filterCate('素菜')">素菜</button>
-      <button class="sticker-tag berry" onclick="filterCate('汤品')">汤品</button>
-      <button class="sticker-tag peach" onclick="filterCate('主食')">主食</button>
-    </div>
-    <div id="recipeList" class="grid md:grid-cols-2 gap-4"></div>
-  </div>
-
-  <!-- 点餐台 -->
-  <div id="page-order" class="page hidden">
+  <!-- 点餐台（添加了图片展示） -->
+  <div id="page-order" class="page">
     <div class="tape-card mb-4">
       <div class="tape peach">🛒 杨梅点餐台</div>
       <div class="tip-bubble mt-3 mb-3 text-sm">🍰 想吃哪个就点哪个，加上备注，生成订单发给大厨吧！</div>
@@ -154,6 +99,69 @@ tailwind.config = {
       <div id="randResult" class="mt-4"></div>
     </div>
   </div>
+
+  <!-- 点单历史（新增） -->
+  <div id="page-history" class="page hidden">
+    <div class="tape-card mb-4">
+      <div class="tape lemon">📜 历史点单记录</div>
+      <div class="tip-bubble mt-3 mb-3 text-sm">这里记录了杨梅点过的所有菜单，时间倒序排列哦～</div>
+      <div id="historyList" class="grid gap-3 max-h-[500px] overflow-y-auto pr-1"></div>
+    </div>
+  </div>
+
+  <!-- 菜谱库 -->
+  <div id="page-library" class="page hidden">
+    <div class="tape-card mb-5">
+      <div class="tape lemon">添加一道杨梅爱吃的菜</div>
+      <input type="hidden" id="editId">
+      <div class="grid md:grid-cols-2 gap-3 mt-2">
+        <div><label class="text-sm">菜名 ♡</label><input id="rname" placeholder="比如：番茄炒蛋"></div>
+        <div>
+          <label class="text-sm">分类</label>
+          <select id="rcate">
+            <option value="荤菜">荤菜</option>
+            <option value="素菜">素菜</option>
+            <option value="汤品">汤品</option>
+            <option value="主食">主食</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm">难度</label>
+          <select id="rdiff">
+            <option value="简单">简单</option>
+            <option value="中等">中等</option>
+            <option value="困难">困难</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm">上传图片</label>
+          <input type="file" id="rimg-file" accept="image/*" onchange="uploadImage()" style="border-style:solid; padding:8px;">
+          <input type="hidden" id="rimg">
+          <p id="upload-status" class="text-xs text-blue-500 mt-1"></p>
+          <img id="rimg-preview" class="mt-2 rounded hidden" style="max-height:100px; border:2px solid #FFD1E0;">
+          <p class="text-xs mt-1" style="color:#b07890;">或者手动粘贴图片链接：</p>
+          <input id="rimg-url" placeholder="https://..." oninput="document.getElementById('rimg').value = this.value">
+        </div>
+      </div>
+      <div class="mt-3"><label class="text-sm">食材（逗号分隔）</label><textarea id="ringre" rows="2" placeholder="鸡蛋, 番茄, 盐, 糖"></textarea></div>
+      <div class="mt-3"><label class="text-sm">做法</label><textarea id="rstep" rows="3" placeholder="简单写一下步骤就好啦"></textarea></div>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <button class="btn-cute" onclick="saveRecipe()">💾 保存菜谱</button>
+        <button class="btn-soft" onclick="clearForm()">🧹 清空表单</button>
+      </div>
+      <p id="db-status" class="text-xs mt-2 text-red-400"></p>
+    </div>
+    
+    <div class="flex flex-wrap gap-2 mb-4">
+      <span class="text-sm" style="color:#b07890">分类筛选：</span>
+      <button class="sticker-tag" onclick="filterCate('全部')">全部</button>
+      <button class="sticker-tag peach" onclick="filterCate('荤菜')">荤菜</button>
+      <button class="sticker-tag lemon" onclick="filterCate('素菜')">素菜</button>
+      <button class="sticker-tag berry" onclick="filterCate('汤品')">汤品</button>
+      <button class="sticker-tag peach" onclick="filterCate('主食')">主食</button>
+    </div>
+    <div id="recipeList" class="grid md:grid-cols-2 gap-4"></div>
+  </div>
 </div>
 
 <script>
@@ -177,13 +185,11 @@ let cart = JSON.parse(localStorage.getItem('yangmei_cart')) || {};
 let filterCategory = "全部";
 let editDocId = null;
 
-// 图片上传核心函数
 async function uploadImage() {
   const fileInput = document.getElementById("rimg-file");
   const file = fileInput.files[0];
   if (!file) return;
 
-  // 本地预览
   const preview = document.getElementById("rimg-preview");
   preview.src = URL.createObjectURL(file);
   preview.classList.remove("hidden");
@@ -200,23 +206,12 @@ async function uploadImage() {
   status.className = "text-xs text-blue-500 mt-1";
 
   try {
-    // 生成唯一文件名
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-    
-    // 上传到 Supabase Storage
-    const { data, error } = await supabaseClient.storage
-      .from('recipe-images')
-      .upload(fileName, file);
-
+    const { data, error } = await supabaseClient.storage.from('recipe-images').upload(fileName, file);
     if (error) throw error;
 
-    // 获取公开链接
-    const { data: urlData } = supabaseClient.storage
-      .from('recipe-images')
-      .getPublicUrl(fileName);
-
-    // 填入表单
+    const { data: urlData } = supabaseClient.storage.from('recipe-images').getPublicUrl(fileName);
     document.getElementById("rimg").value = urlData.publicUrl;
     document.getElementById("rimg-url").value = urlData.publicUrl;
     
@@ -254,7 +249,7 @@ async function saveRecipe(){
     name: name,
     cate: document.getElementById("rcate").value,
     diff: document.getElementById("rdiff").value,
-    img: document.getElementById("rimg").value, // 获取上传后的URL或手动输入的URL
+    img: document.getElementById("rimg").value,
     ingre: document.getElementById("ringre").value,
     step: document.getElementById("rstep").value
   };
@@ -346,8 +341,11 @@ function switchTab(name){
   
   if(name==="order") renderOrderList();
   if(name==="random") document.getElementById("randResult").innerHTML = '';
+  if(name==="history") renderHistoryList();
+  if(name==="library") renderRecipeList();
 }
 
+// ============ 点餐台功能 (含图片展示) ============
 function renderOrderList(){
   const wrap = document.getElementById("orderList");
   wrap.innerHTML = "";
@@ -360,12 +358,17 @@ function renderOrderList(){
     const div = document.createElement("div");
     div.className = "check-item";
     div.style.justifyContent = "space-between";
+    div.style.display = "flex";
+    div.style.alignItems = "center";
     div.innerHTML = `
-      <div>
-        <div style="font-size:1.1rem;">${r.name}</div>
-        <div style="font-size:0.8rem;color:#b07890;">${r.cate} · 难度${r.diff}</div>
+      <div style="display:flex; align-items:center; gap:12px; flex:1;">
+        <img src="${r.img || 'https://via.placeholder.com/100/FFD1E0/ffffff?text=图'}" style="width:50px; height:50px; object-fit:cover; border-radius:10px; border:2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05);" onerror="this.src='https://via.placeholder.com/100/FFD1E0/ffffff?text=图'">
+        <div>
+          <div style="font-size:1.1rem; font-weight:bold;">${r.name}</div>
+          <div style="font-size:0.8rem; color:#b07890;">${r.cate} · 难度${r.diff}</div>
+        </div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div style="display:flex; align-items:center; gap:8px;">
         ${qty > 0 ? `<div class="qty-btn" onclick="changeQty(${r.id}, -1)">-</div>` : ''}
         <span style="font-family:'Ma Shan Zheng';font-size:1.2rem;color:#E67A7A;width:20px;text-align:center;">${qty > 0 ? qty : ''}</span>
         <div class="qty-btn" onclick="changeQty(${r.id}, 1)">+</div>
@@ -408,9 +411,46 @@ function renderOrderPreview(){
   copyBtn.classList.remove('hidden');
 }
 
+// 生成点餐单并保存历史记录
 function generateOrder(){
   renderOrderPreview();
-  document.getElementById("orderPreview").scrollIntoView({behavior:"smooth"});
+  
+  const note = document.getElementById("orderNote").value.trim();
+  const items = Object.keys(cart).map(id => {
+    const r = recipes.find(x => x.id == id);
+    // 保存快照，以防菜谱库删除后历史记录无法显示
+    return r ? { id: r.id, name: r.name, img: r.img, cate: r.cate, diff: r.diff, qty: cart[id] } : null;
+  }).filter(Boolean);
+
+  if(items.length > 0){
+    // 1. 保存到本地历史记录
+    let history = JSON.parse(localStorage.getItem('yangmei_history')) || [];
+    const orderRecord = {
+      id: Date.now(),
+      date: new Date().toLocaleString(),
+      note: note,
+      items: items
+    };
+    history.unshift(orderRecord); // 头部插入，实现时间倒序
+    if (history.length > 50) history = history.slice(0, 50); // 最多保留50条
+    localStorage.setItem('yangmei_history', JSON.stringify(history));
+
+    // 2. 尝试同步到云端 daily_menu (只存ID数组)
+    if (supabaseClient) {
+      const todayStr = new Date().toISOString().split('T')[0];
+      supabaseClient.from('daily_menu').insert([{
+        menu_date: todayStr,
+        selected_ids: items.map(i => i.id)
+      }]).then(({error}) => {
+        if(error) console.error("同步点单记录到云端失败", error);
+      });
+    }
+    
+    document.getElementById("orderPreview").scrollIntoView({behavior:"smooth"});
+    // 自动刷新一下历史列表，下次切换过去数据是新的
+  } else {
+    alert("还没有点菜，去上面选几道吧～");
+  }
 }
 
 function clearOrder(){
@@ -445,6 +485,46 @@ function copyOrderText(){
   });
 }
 
+// ============ 历史记录渲染 (新增) ============
+function renderHistoryList(){
+  const wrap = document.getElementById("historyList");
+  let history = JSON.parse(localStorage.getItem('yangmei_history')) || [];
+  
+  wrap.innerHTML = "";
+  if(history.length === 0){
+    wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">还没有点过单哦，快去点餐台试试吧～</p>';
+    return;
+  }
+
+  history.forEach(record => {
+    const div = document.createElement("div");
+    div.className = "recipe-card";
+    
+    let itemsHtml = "";
+    record.items.forEach(item => {
+      itemsHtml += `
+        <div style="display:flex; align-items:center; gap:10px; background:#FFFAF2; padding:10px; border-radius:10px; border:1px dashed #FFE0EC; margin-bottom:8px;">
+          <img src="${item.img || 'https://via.placeholder.com/100/FFD1E0/ffffff?text=图'}" style="width:40px; height:40px; object-fit:cover; border-radius:8px;" onerror="this.src='https://via.placeholder.com/100/FFD1E0/ffffff?text=图'">
+          <div style="flex:1; font-size:0.95rem;">
+            ${item.name} <span class="sticker-tag peach" style="font-size:11px; padding:1px 8px;">x${item.qty}</span>
+          </div>
+          <div style="font-size:0.75rem; color:#b07890;">${item.cate}</div>
+        </div>
+      `;
+    });
+
+    div.innerHTML = `
+      <div class="text-lg heart-title mb-2 flex justify-between items-center">
+        <span>📅 ${record.date}</span>
+      </div>
+      <div class="grid md:grid-cols-2 gap-2">${itemsHtml}</div>
+      ${record.note ? `<div class="text-sm mt-2" style="color:#b07890; background:#FFF4B8; padding:8px; border-radius:8px;">📝 备注：${record.note}</div>` : ''}
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+// ============ 随机点菜 ============
 function pickRandom(){
   const num = Number(document.getElementById("randNum").value);
   const wrap = document.getElementById("randResult");
@@ -465,7 +545,6 @@ function pickRandom(){
 
 function renderAll(){ renderRecipeList(); }
 
-// 编辑时回填图片
 function editRecipe(id){
   editDocId = id;
   const r = recipes.find(x=>x.id === id);
@@ -481,6 +560,9 @@ function editRecipe(id){
   }
   document.getElementById("ringre").value = r.ingre;
   document.getElementById("rstep").value = r.step;
+  
+  // 自动切换到菜谱库Tab
+  switchTab('library');
 }
 
 async function delRecipe(id){
