@@ -57,6 +57,11 @@ tailwind.config = {
   .upload-btn { border: 2px dashed #F2C4CE; color: #E67A7A; background-color: #FFF7F1; padding: 12px; border-radius: 12px; font-size: 0.95rem; text-align: center; width: 100%; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'ZCOOL KuaiLe', sans-serif; cursor: pointer; }
   .upload-btn:hover { background-color: #FFE0EC; border-color: #FFB6C8; }
 
+  /* 骨架屏动画 */
+  .skeleton { background: linear-gradient(90deg, #FFE0EC 25%, #FFF7F1 50%, #FFE0EC 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 12px; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .loading-text { text-align: center; color: #b07890; padding: 40px 0; font-size: 1rem; }
+
   /* 全屏居中 Modal Toast 设计 */
   #toast-modal {
     visibility: hidden; opacity: 0;
@@ -124,7 +129,9 @@ tailwind.config = {
         <button class="filter-btn" onclick="filterOrderCate('酒水', this)">酒水</button>
       </div>
 
-      <div id="orderList" class="grid gap-3 max-h-[420px] overflow-y-auto pr-1"></div>
+      <div id="orderList" class="grid gap-3 max-h-[420px] overflow-y-auto pr-1">
+        <div class="loading-text">正在加载杨梅的菜单...</div>
+      </div>
       
       <div class="mt-5">
         <label class="text-sm">给大厨的备注：</label>
@@ -154,7 +161,6 @@ tailwind.config = {
       </div>
       <div id="randResult" class="mt-5"></div>
       
-      <!-- 随机结果的确认提交按钮（默认隐藏） -->
       <div id="randomSubmitArea" class="mt-4 hidden text-center">
          <button class="btn-cute w-full md:w-auto" id="randomSubmitBtn" onclick="submitRandomOrder()">💖 确认提交这份点餐单</button>
       </div>
@@ -267,7 +273,7 @@ let editDocId = null;
 let syncTimeout = null;
 let isUploading = false;
 let isEditingNote = false;
-let currentRandomResult = null; // 用于记录随机抽取的结果
+let currentRandomResult = null;
 
 // 新的全屏居中弹框函数
 function showToast(message, icon = "💕") {
@@ -282,7 +288,7 @@ function showToast(message, icon = "💕") {
   clearTimeout(window.toastTimer);
   window.toastTimer = setTimeout(() => {
     modal.classList.remove("show");
-  }, 3000); // 3秒自动消失
+  }, 3000);
 }
 
 function hideModalToast() {
@@ -300,13 +306,19 @@ function sortRecipes(list) {
   });
 }
 
-// ============ 核心数据拉取 ============
-async function loadAllData() {
+// ============ 核心数据拉取（优化版：顺序化 + 重试） ============
+async function loadAllData(retryCount = 0) {
   try {
+    // 1. 先拉取菜谱（优先渲染）
     const { data: recipeData, error: recipeErr } = await supabaseClient.from('recipes').select('*');
     if (recipeErr) throw recipeErr;
     recipes = recipeData || [];
-
+    
+    // 立即渲染菜谱和点餐台（此时购物车可能还是空的，但菜品已经出来）
+    renderRecipeList();
+    renderOrderList();
+    
+    // 2. 再拉取购物车
     const { data: cartData, error: cartErr } = await supabaseClient.from('cart').select('*').eq('id', 1).single();
     if (cartErr) throw cartErr;
     cart = cartData || { items: [], note: '' };
@@ -315,12 +327,23 @@ async function loadAllData() {
       document.getElementById("orderNote").value = cart.note || '';
     }
 
-    renderAll();
+    // 3. 再次渲染合并后的点餐台
+    renderOrderList();
     renderOrderPreview();
     initRealtime();
+    
   } catch (e) {
     console.error("加载数据失败", e);
-    document.getElementById("db-status").innerText = "⚠️ 云端读取失败，请检查网络或数据库配置";
+    
+    // 如果第一次失败，自动重试一次（应对冷启动超时）
+    if (retryCount < 1) {
+      console.log("首次加载失败，正在重试...");
+      document.getElementById("orderList").innerHTML = '<div class="loading-text">正在唤醒数据库，请稍候...</div>';
+      setTimeout(() => loadAllData(retryCount + 1), 2000);
+    } else {
+      document.getElementById("orderList").innerHTML = '<div class="loading-text">😥 加载失败，请检查网络后刷新页面重试</div>';
+      document.getElementById("db-status").innerText = "⚠️ 云端读取失败，请检查网络或数据库配置";
+    }
   }
 }
 
@@ -495,10 +518,14 @@ function filterOrderCate(c, btn){
 function renderOrderList(){
   const wrap = document.getElementById("orderList");
   wrap.innerHTML = "";
+  
   let list = orderFilterCategory === "全部" ? recipes : recipes.filter(r => r.cate === orderFilterCategory);
   list = sortRecipes(list);
 
-  if(list.length === 0) { wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">这个分类下还没有菜品哦～</p>'; return; }
+  if(list.length === 0) { 
+    wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">这个分类下还没有菜品哦～</p>'; 
+    return; 
+  }
 
   list.forEach(r=>{
     const qty = (cart.items.find(i => i.id === r.id) || {}).qty || 0;
@@ -720,16 +747,14 @@ function pickRandom(){
   html += `<div class="text-sm mt-3" style="color:#b07890">是不是杨梅爱吃的那几道呢？💕</div></div>`;
   wrap.innerHTML = html;
   
-  // 展示确认提交按钮
   document.getElementById("randomSubmitArea").classList.remove("hidden");
 }
 
-// 提交随机点单（点击按钮后才触发，弹窗由点击触发）
 async function submitRandomOrder(){
   if(!currentRandomResult || currentRandomResult.length === 0) return;
   
   const q = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
-  showToast(q.text, q.icon); // 全屏情话弹窗
+  showToast(q.text, q.icon);
 
   const note = "（随机点单）" + (document.getElementById("orderNote").value.trim() || "");
   
@@ -739,12 +764,10 @@ async function submitRandomOrder(){
 
   await supabaseClient.from('daily_menu').insert([{ note: note, items: snapshot }]);
   
-  // 清空随机页面
   document.getElementById("randResult").innerHTML = "";
   document.getElementById("randomSubmitArea").classList.add("hidden");
   currentRandomResult = null;
   
-  // 3秒后自动跳转到历史记录
   setTimeout(() => { switchTab('history'); }, 3000);
 }
 
@@ -788,7 +811,7 @@ window.submitRandomOrder = submitRandomOrder;
 window.uploadImage = uploadImage;
 window.hideModalToast = hideModalToast;
 
-window.onload = loadAllData;
+window.onload = () => loadAllData();
 </script>
 </body>
 </html>
