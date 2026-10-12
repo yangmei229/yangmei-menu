@@ -30,7 +30,7 @@ tailwind.config = {
   .tape { position: absolute; top: -14px; left: 50%; transform: translateX(-50%) rotate(-3deg); background: #FFD1E0; color: #fff; padding: 4px 14px; border-radius: 10px; font-size: 13px; letter-spacing: 1px; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(230, 122, 122, 0.25); }
   .tape.strawberry { background: #E67A7A; } .tape.lemon { background: #F2D166; } .tape.peach { background: #FFBFA3; }
   .sticker-tag { display: inline-block; padding: 3px 10px; border-radius: 10px; font-family: 'Ma Shan Zheng', cursive; background: #FFD1E0; color: #fff; transform: rotate(-2deg); box-shadow: 0 2px 4px rgba(230, 122, 122, 0.25); margin-right: 6px; margin-bottom: 4px; font-size: 13px; }
-  .sticker-tag.peach { background: #FFBFA3; } .sticker-tag.lemon { background: #F2D166; color: #7a5b30; } .sticker-tag.berry { background: #E67A7A; } .sticker-tag.sweet { background: #A8E6CF; color: #3B7A57; } .sticker-tag.drink { background: #D4C4FB; color: #5B3E96; }
+  .sticker-tag.peach { background: #FFBFA3; } .sticker-tag.lemon { background: #F2D166; color: #7a5b30; } .sticker-tag.berry { background: #E67A7A; } .sticker-tag.sweet { background: #A8E6CF; color: #3B7A57; } .sticker-tag.drink { background: #D4C4FB; color: #5B3E96; } .sticker-tag.fruit { background: #FFC8A2; color: #8B4513; }
   .heart-title { font-family: 'Ma Shan Zheng', cursive; background: linear-gradient(90deg, #E67A7A, #FFBFA3); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .btn-cute { background: linear-gradient(180deg, #FFD1E0, #FFB6C8); color: #fff; border: 2px solid #fff; border-radius: 999px; padding: 10px 18px; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.3); transition: all .2s ease; }
   .btn-cute:hover:not(:disabled) { transform: translateY(-2px) scale(1.03); }
@@ -83,7 +83,7 @@ tailwind.config = {
     border: 3px solid #fff; box-shadow: 0 4px 10px rgba(230, 122, 122, 0.2);
   }
 
-  /* 全屏居中 Modal Toast (自己操作时) */
+  /* 自己点单确认 Toast (3秒自动消失) */
   #toast-modal {
     visibility: hidden; opacity: 0;
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -117,6 +117,63 @@ tailwind.config = {
   }
   #toast-icon { font-size: 3rem; margin-bottom: 15px; display: block; animation: heartBeat 1.5s infinite; }
   @keyframes heartBeat { 0% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } 70% { transform: scale(1); } }
+
+  /* 里程碑专属弹框 (更隆重、有仪式感) */
+  #milestone-modal {
+    visibility: hidden; opacity: 0;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 214, 224, 0.7);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10002;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  #milestone-modal.show { visibility: visible; opacity: 1; }
+  #milestone-content {
+    background: linear-gradient(135deg, #FFFAF2, #FFE8EF, #FFF4B8);
+    border: 5px double #E67A7A;
+    padding: 45px 50px; border-radius: 36px;
+    box-shadow: 0 30px 80px rgba(230, 122, 122, 0.5), inset 0 0 40px rgba(255, 214, 224, 0.5);
+    text-align: center;
+    transform: scale(0.5) rotate(-5deg);
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90%; position: relative;
+    overflow: hidden;
+  }
+  #milestone-modal.show #milestone-content { transform: scale(1) rotate(0deg); }
+  #milestone-content::before {
+    content: "🏆"; position: absolute; top: -25px; left: 50%;
+    transform: translateX(-50%); background: #FFD700;
+    padding: 8px 20px; border-radius: 24px; font-size: 26px;
+    border: 3px solid #fff; box-shadow: 0 6px 15px rgba(230, 122, 122, 0.3);
+  }
+  #milestone-content::after {
+    content: "✨"; position: absolute; top: 20px; right: 20px;
+    font-size: 30px; animation: sparkle 2s infinite;
+  }
+  @keyframes sparkle { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
+  #milestone-number {
+    font-family: 'Ma Shan Zheng', cursive; font-size: 4rem;
+    background: linear-gradient(90deg, #E67A7A, #FFD700, #E67A7A);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    line-height: 1; margin-bottom: 10px;
+    text-shadow: 0 4px 10px rgba(230, 122, 122, 0.2);
+  }
+  #milestone-message {
+    font-family: 'Ma Shan Zheng', cursive; font-size: 1.5rem;
+    color: #E67A7A; line-height: 1.6; margin-bottom: 10px;
+  }
+  #milestone-sub {
+    font-size: 1rem; color: #b07890; margin-bottom: 25px;
+  }
+  #milestone-close-btn {
+    background: linear-gradient(180deg, #FFD700, #FFB6C8); color: #fff; border: 2px solid #fff;
+    border-radius: 999px; padding: 12px 40px; font-size: 1.1rem;
+    box-shadow: 0 6px 15px rgba(230, 122, 122, 0.4);
+    cursor: pointer; transition: all 0.2s ease;
+    font-family: 'ZCOOL KuaiLe', sans-serif;
+  }
+  #milestone-close-btn:hover { transform: translateY(-2px) scale(1.05); }
 
   /* 对方点单提醒弹框 (手动关闭) */
   #notify-modal {
@@ -162,6 +219,38 @@ tailwind.config = {
   }
   #notify-close-btn:hover { transform: translateY(-2px) scale(1.03); }
 
+  /* 历史记录详情弹框 */
+  #history-detail-modal {
+    visibility: hidden; opacity: 0;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 238, 242, 0.6);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10003;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  #history-detail-modal.show { visibility: visible; opacity: 1; }
+  #history-detail-content {
+    background: linear-gradient(135deg, #ffffff, #FFF7F1);
+    border: 4px dashed #FFB6C8;
+    padding: 25px 30px; border-radius: 28px;
+    box-shadow: 0 25px 60px rgba(230, 122, 122, 0.4);
+    text-align: left;
+    transform: scale(0.8) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90%; width: 500px; max-height: 80vh;
+    overflow-y: auto; position: relative;
+  }
+  #history-detail-modal.show #history-detail-content { transform: scale(1) translateY(0); }
+  #history-detail-close {
+    position: absolute; top: 12px; right: 16px;
+    font-size: 24px; color: #E67A7A; cursor: pointer;
+    background: #FFE0EC; width: 36px; height: 36px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff; transition: all 0.2s;
+  }
+  #history-detail-close:hover { background: #FFB6C8; color: #fff; transform: rotate(90deg); }
+
   ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: #FFB6C8; border-radius: 4px; }
 </style>
 </head>
@@ -190,6 +279,7 @@ tailwind.config = {
         <button class="filter-btn" onclick="filterOrderCate('素菜', this)">素菜</button>
         <button class="filter-btn" onclick="filterOrderCate('汤品', this)">汤品</button>
         <button class="filter-btn" onclick="filterOrderCate('主食', this)">主食</button>
+        <button class="filter-btn" onclick="filterOrderCate('水果', this)">水果</button>
         <button class="filter-btn" onclick="filterOrderCate('甜品', this)">甜品</button>
         <button class="filter-btn" onclick="filterOrderCate('酒水', this)">酒水</button>
       </div>
@@ -236,7 +326,7 @@ tailwind.config = {
   <div id="page-history" class="page hidden">
     <div class="tape-card mb-4">
       <div class="tape lemon">📜 历史点单记录</div>
-      <div class="tip-bubble mt-3 mb-4 text-sm">这里记录了你们点过的所有菜单，双端实时同步～</div>
+      <div class="tip-bubble mt-3 mb-4 text-sm">这里记录了你们点过的所有菜单，点击每条记录可查看完整详情～</div>
       <div id="historyList" class="grid gap-3 max-h-[500px] overflow-y-auto pr-1"></div>
     </div>
   </div>
@@ -255,6 +345,7 @@ tailwind.config = {
             <option value="素菜">素菜</option>
             <option value="汤品">汤品</option>
             <option value="主食">主食</option>
+            <option value="水果">水果</option>
             <option value="甜品">甜品</option>
             <option value="酒水">酒水</option>
           </select>
@@ -295,6 +386,7 @@ tailwind.config = {
       <button class="filter-btn" onclick="filterCate('素菜', this)">素菜</button>
       <button class="filter-btn" onclick="filterCate('汤品', this)">汤品</button>
       <button class="filter-btn" onclick="filterCate('主食', this)">主食</button>
+      <button class="filter-btn" onclick="filterCate('水果', this)">水果</button>
       <button class="filter-btn" onclick="filterCate('甜品', this)">甜品</button>
       <button class="filter-btn" onclick="filterCate('酒水', this)">酒水</button>
     </div>
@@ -302,7 +394,7 @@ tailwind.config = {
   </div>
 </div>
 
-<!-- 昵称设置弹框 (首次进入) -->
+<!-- 昵称设置弹框 -->
 <div id="name-modal">
   <div id="name-content">
     <h2 class="text-2xl heart-title mb-2">欢迎来到专属菜单 💕</h2>
@@ -312,7 +404,7 @@ tailwind.config = {
   </div>
 </div>
 
-<!-- 全屏精美居中 Toast (自己操作时) -->
+<!-- 自己点单确认 Toast -->
 <div id="toast-modal" onclick="hideModalToast()">
   <div id="toast-content">
     <span id="toast-icon">💕</span>
@@ -320,7 +412,17 @@ tailwind.config = {
   </div>
 </div>
 
-<!-- 对方点单时的提醒弹框 (手动关闭) -->
+<!-- 里程碑专属弹框 (10/20/30次) -->
+<div id="milestone-modal">
+  <div id="milestone-content">
+    <div id="milestone-number">10</div>
+    <div id="milestone-message">你们已经一起点了 10 顿饭啦！</div>
+    <div id="milestone-sub">要继续好好吃饭，一直在一起哦 💕</div>
+    <button id="milestone-close-btn" onclick="closeMilestoneModal()">继续幸福下去 ✨</button>
+  </div>
+</div>
+
+<!-- 对方点单时的提醒弹框 -->
 <div id="notify-modal">
   <div id="notify-content">
     <span id="notify-icon">💌</span>
@@ -330,17 +432,25 @@ tailwind.config = {
   </div>
 </div>
 
+<!-- 历史记录详情弹框 -->
+<div id="history-detail-modal" onclick="if(event.target === this) closeHistoryDetail()">
+  <div id="history-detail-content">
+    <div id="history-detail-close" onclick="closeHistoryDetail()">×</div>
+    <div id="history-detail-body"></div>
+  </div>
+</div>
+
 <script>
 // ============ Supabase 配置 ============
 const SUPABASE_URL = "https://walbapquafqibcqdhazq.supabase.co"; 
 const SUPABASE_ANON_KEY = "sb_publishable_P3OMyZLQbYGHLrbrOVXEdw_cLD4Livn";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const CATE_ORDER = ['荤菜', '素菜', '汤品', '主食', '甜品', '酒水'];
+// 分类顺序：主食后面加水果，再甜品，再酒水
+const CATE_ORDER = ['荤菜', '素菜', '汤品', '主食', '水果', '甜品', '酒水'];
 
 let currentUserName = localStorage.getItem('yangmei_user_name') || null;
 
-// 自己点单确认（30条，3秒自动消失）
 const selfConfirmQuotes = [
   "只要是你点的，我都做给你吃 🍳", "今天也是爱你的一天 💕", "你想吃的，就是世界上最好的美味 ✨",
   "大厨已就位，随时准备投喂 🥰", "爱意藏在每一顿饭菜里 🍲", "希望你每天都能吃得开心 🍰",
@@ -354,12 +464,20 @@ const selfConfirmQuotes = [
   "这一餐，是我们的小确幸 🌈", "快来吧，饭菜要凉啦 🍲", "你的专属点餐员已上线 📋"
 ];
 
-// 对方点单提醒（10条，手动关闭）
 const partnerNotifyQuotes = [
   "专属大厨该接单啦！", "小馋猫已下单，快去投喂吧！", "有人点菜啦，快去露一手！",
   "你的食客已就位，请开始表演！", "爱意订单已送达，请查收！", "你的小可爱饿了，快去做饭！",
   "接单成功，请速速前往厨房！", "有人想尝尝你的手艺啦！", "订单已来，大厨请准备！",
   "你的专属食客已下单！"
+];
+
+// 里程碑文案库
+const milestoneMessages = [
+  "你们已经一起点了 {n} 顿饭啦！",
+  "哇！第 {n} 顿的共同晚餐 🎉",
+  "不知不觉，已经一起吃了 {n} 顿饭 💕",
+  "第 {n} 顿饭，每一顿都是爱的证明 ✨",
+  "你们解锁了 {n} 顿共同的美食记忆！"
 ];
 
 let recipes = [];
@@ -419,6 +537,61 @@ function closeNotifyModal() {
   document.getElementById("notify-modal").classList.remove("show");
 }
 
+// 里程碑专属弹框
+function showMilestoneModal(count) {
+  const msg = milestoneMessages[Math.floor(Math.random() * milestoneMessages.length)].replace('{n}', count);
+  document.getElementById("milestone-number").innerText = count;
+  document.getElementById("milestone-message").innerText = msg;
+  document.getElementById("milestone-modal").classList.add("show");
+}
+
+function closeMilestoneModal() {
+  document.getElementById("milestone-modal").classList.remove("show");
+}
+
+// 历史详情弹框
+function showHistoryDetail(recordId) {
+  const record = window._historyCache && window._historyCache.find(r => r.id === recordId);
+  if (!record) return;
+  
+  const dateObj = new Date(record.order_time);
+  const timeStr = dateObj.toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  
+  let itemsHtml = "";
+  (record.items || []).forEach(item => {
+    itemsHtml += `
+      <div style="display:flex; align-items:center; gap:12px; background:#FFFAF2; padding:12px; border-radius:12px; border:1px dashed #FFE0EC; margin-bottom:10px;">
+        <img src="${item.img || 'https://via.placeholder.com/100/FFD1E0/ffffff?text=图'}" style="width:50px; height:50px; object-fit:cover; border-radius:10px;" onerror="this.src='https://via.placeholder.com/100/FFD1E0/ffffff?text=图'">
+        <div style="flex:1; font-size:1rem;">
+          <div style="font-weight:bold;">${item.name}</div>
+          <div style="font-size:0.8rem; color:#b07890; margin-top:2px;">
+            <span class="sticker-tag ${item.cate === '水果' ? 'fruit' : item.cate === '甜品' ? 'sweet' : item.cate === '酒水' ? 'drink' : 'peach'}" style="font-size:11px; padding:1px 8px;">${item.cate}</span>
+            x${item.qty}
+          </div>
+        </div>
+      </div>`;
+  });
+
+  document.getElementById("history-detail-body").innerHTML = `
+    <div style="text-align:center; margin-bottom:20px;">
+      <div style="font-family:'Ma Shan Zheng',cursive; font-size:1.6rem; background:linear-gradient(90deg,#E67A7A,#FFBFA3); -webkit-background-clip:text; background-clip:text; color:transparent;">
+        🍽️ 完整点餐单
+      </div>
+      <div style="font-size:0.9rem; color:#b07890; margin-top:5px;">
+        📅 ${timeStr} · 👤 ${record.orderer || '某位小可爱'}
+      </div>
+    </div>
+    <div>${itemsHtml}</div>
+    ${record.note ? `<div style="margin-top:15px; background:#FFF4B8; padding:12px; border-radius:12px; font-size:0.9rem; color:#7a5b30;">📝 备注：${record.note}</div>` : ''}
+  `;
+  
+  document.getElementById("history-detail-modal").classList.add("show");
+}
+
+function closeHistoryDetail() {
+  document.getElementById("history-detail-modal").classList.remove("show");
+}
+
 // ============ 排序 ============
 function sortRecipes(list) {
   return list.sort((a, b) => {
@@ -431,7 +604,18 @@ function sortRecipes(list) {
 
 // ============ 核心数据拉取 ============
 async function loadAllData(retryCount = 0) {
+  const maxRetries = 3;
+  const retryDelay = retryCount === 0 ? 2000 : (retryCount === 1 ? 3000 : 5000);
+  
   try {
+    if (retryCount === 0) {
+      try {
+        await supabaseClient.from('recipes').select('id', { count: 'exact', head: true }).limit(1);
+      } catch (pingErr) {
+        console.log("数据库唤醒中...");
+      }
+    }
+
     const { data: recipeData, error: recipeErr } = await supabaseClient.from('recipes').select('*');
     if (recipeErr) throw recipeErr;
     recipes = recipeData || [];
@@ -458,18 +642,30 @@ async function loadAllData(retryCount = 0) {
     initRealtime();
     
   } catch (e) {
-    console.error("加载数据失败", e);
-    if (retryCount < 1) {
-      document.getElementById("orderList").innerHTML = '<div class="loading-text">正在唤醒数据库，请稍候...</div>';
-      setTimeout(() => loadAllData(retryCount + 1), 2000);
+    console.error(`加载数据失败（第 ${retryCount + 1} 次）`, e);
+    
+    if (retryCount < maxRetries) {
+      const loadingText = retryCount === 0 
+        ? '正在唤醒数据库，请稍候...' 
+        : `正在重试（${retryCount}/${maxRetries}）...`;
+      
+      document.getElementById("orderList").innerHTML = `<div class="loading-text">${loadingText}</div>`;
+      setTimeout(() => loadAllData(retryCount + 1), retryDelay);
     } else {
-      document.getElementById("orderList").innerHTML = '<div class="loading-text">😥 加载失败，请检查网络后刷新页面重试</div>';
-      document.getElementById("db-status").innerText = "⚠️ 云端读取失败，请检查网络或数据库配置";
+      document.getElementById("orderList").innerHTML = `
+        <div class="loading-text" style="line-height:2;">
+          😥 加载失败，可能是网络波动或数据库正在唤醒<br>
+          <button onclick="location.reload()" style="margin-top:10px; padding:8px 20px; border-radius:999px; background:#FFD1E0; color:#E67A7A; border:2px solid #fff; cursor:pointer; font-family:'ZCOOL KuaiLe',sans-serif;">
+            🔄 点击刷新重试
+          </button>
+        </div>
+      `;
+      document.getElementById("db-status").innerText = "⚠️ 云端读取失败，请点击刷新重试";
     }
   }
 }
 
-// ============ 检查未读点单提醒（离线补偿） ============
+// ============ 检查未读提醒 ============
 async function checkUnreadNotifications() {
   try {
     const { data: unreadData, error } = await supabaseClient
@@ -531,7 +727,6 @@ function initRealtime() {
         }
 
         const newRecord = payload.new;
-
         if (newRecord.orderer === currentUserName) return;
 
         const randomMsg = partnerNotifyQuotes[Math.floor(Math.random() * partnerNotifyQuotes.length)];
@@ -644,7 +839,7 @@ function renderRecipeList(){
       <img class="recipe-img" src="${r.img||'https://via.placeholder.com/300x200/FFD1E0/ffffff?text=美食'}" onerror="this.src='https://via.placeholder.com/300x200/FFD1E0/ffffff?text=美食'">
       <div class="text-xl mt-3 heart-title">${r.name}</div>
       <div class="mt-2 flex flex-wrap gap-1">
-        <span class="sticker-tag ${r.cate === '甜品' ? 'sweet' : r.cate === '酒水' ? 'drink' : 'peach'}">${r.cate}</span>
+        <span class="sticker-tag ${r.cate === '水果' ? 'fruit' : r.cate === '甜品' ? 'sweet' : r.cate === '酒水' ? 'drink' : 'peach'}">${r.cate}</span>
         <span class="sticker-tag lemon">难度 ${r.diff}</span>
       </div>
       <div class="mt-4 flex gap-2">
@@ -773,10 +968,11 @@ async function generateOrder(){
   if(cart.items.length === 0) { showToast("还没有点菜哦，去上面选几道吧～"); return; }
   
   const totalCount = await getOrderCount();
+  const nextCount = totalCount + 1;
   
-  if (totalCount > 0 && totalCount % 10 === 0) {
-    const msg = `你们已经一起点了 ${totalCount} 顿饭啦！要继续好好吃饭，一直在一起哦 💕`;
-    showToast(msg, "🎉");
+  // 里程碑判断：点单后总数是10的倍数
+  if (nextCount > 0 && nextCount % 10 === 0) {
+    showMilestoneModal(nextCount);
   } else {
     const q = selfConfirmQuotes[Math.floor(Math.random() * selfConfirmQuotes.length)];
     showToast(q);
@@ -833,7 +1029,7 @@ function copyOrderText(){
   });
 }
 
-// ============ 历史记录 ============
+// ============ 历史记录（折叠展示 + 点击查看完整） ============
 async function renderHistoryList(){
   const wrap = document.getElementById("historyList");
   wrap.innerHTML = '<p class="text-center text-sm" style="color:#b07890">正在从云端拉取记录...</p>';
@@ -844,15 +1040,24 @@ async function renderHistoryList(){
     return;
   }
 
+  // 缓存完整数据用于详情弹框
+  window._historyCache = history;
+  
   wrap.innerHTML = "";
   history.forEach(record => {
     const dateObj = new Date(record.order_time);
     const timeStr = dateObj.toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     const div = document.createElement("div");
     div.className = "recipe-card";
+    div.style.cursor = "pointer";
+    div.onclick = () => showHistoryDetail(record.id);
     
+    const items = record.items || [];
+    const displayItems = items.slice(0, 2); // 只显示前两道
+    const hasMore = items.length > 2;
+
     let itemsHtml = "";
-    (record.items || []).forEach(item => {
+    displayItems.forEach(item => {
       itemsHtml += `
         <div style="display:flex; align-items:center; gap:10px; background:#FFFAF2; padding:10px; border-radius:10px; border:1px dashed #FFE0EC; margin-bottom:8px;">
           <img src="${item.img || 'https://via.placeholder.com/100/FFD1E0/ffffff?text=图'}" style="width:40px; height:40px; object-fit:cover; border-radius:8px;" onerror="this.src='https://via.placeholder.com/100/FFD1E0/ffffff?text=图'">
@@ -862,6 +1067,13 @@ async function renderHistoryList(){
           <div style="font-size:0.75rem; color:#b07890;">${item.cate}</div>
         </div>`;
     });
+    
+    if (hasMore) {
+      itemsHtml += `
+        <div style="text-align:center; padding:8px; color:#b07890; font-size:0.9rem;">
+          ··· 还有 ${items.length - 2} 道菜 ···
+        </div>`;
+    }
 
     div.innerHTML = `
       <div class="text-lg heart-title mb-3 flex justify-between items-center border-b-2 border-dashed border-pink-200 pb-2">
@@ -870,17 +1082,18 @@ async function renderHistoryList(){
       </div>
       <div class="grid md:grid-cols-2 gap-2">${itemsHtml}</div>
       ${record.note ? `<div class="text-sm mt-3" style="color:#b07890; background:#FFF4B8; padding:10px; border-radius:10px;">📝 备注：${record.note}</div>` : ''}
+      <div style="text-align:right; font-size:0.8rem; color:#E67A7A; margin-top:8px;">点击查看完整点餐单 →</div>
     `;
     wrap.appendChild(div);
   });
 }
 
-// ============ 随机点菜（汤品计入总数，甜品/酒水不参与） ============
+// ============ 随机点菜（汤品计入总数，水果/甜品/酒水不参与） ============
 function pickRandom(){
   const num = Number(document.getElementById("randNum").value);
   const wrap = document.getElementById("randResult");
   
-  // 1. 过滤掉甜品和酒水，只保留荤菜、素菜、汤品
+  // 只保留荤菜、素菜、汤品，水果/甜品/酒水不参与
   const eligible = recipes.filter(r => ['荤菜', '素菜', '汤品'].includes(r.cate));
   if(eligible.length === 0){ 
     wrap.innerHTML = `<p>没有可供随机的主菜，先去添加一些荤素菜吧～</p>`; 
@@ -894,7 +1107,6 @@ function pickRandom(){
   const soups = eligible.filter(r => r.cate === '汤品');
   const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
-  // 2. 决定是否加入汤品（约50%概率，且汤库不为空）
   let includeSoup = false;
   let soupItem = null;
   if (soups.length > 0 && Math.random() > 0.5) {
@@ -902,24 +1114,20 @@ function pickRandom(){
     soupItem = soups[Math.floor(Math.random() * soups.length)];
   }
 
-  // 3. 计算需要抽取的荤素数量（如果选了汤，就从总数里扣除1个名额）
   const targetMeatVeg = includeSoup ? num - 1 : num;
 
   let meatCount = Math.round(targetMeatVeg * 2 / 3);
   let vegCount = targetMeatVeg - meatCount;
 
-  // 4. 抽取荤菜
   let result = [];
   let shuffledMeats = shuffle([...meats]);
   let selectedMeats = shuffledMeats.slice(0, Math.min(meatCount, meats.length));
   result.push(...selectedMeats);
 
-  // 5. 抽取素菜
   let shuffledVeggies = shuffle([...veggies]);
   let selectedVeggies = shuffledVeggies.slice(0, Math.min(vegCount, veggies.length));
   result.push(...selectedVeggies);
 
-  // 6. 补齐数量
   if(result.length < targetMeatVeg) {
     let remainingMeats = shuffledMeats.slice(selectedMeats.length);
     let remainingVeggies = shuffledVeggies.slice(selectedVeggies.length);
@@ -930,17 +1138,14 @@ function pickRandom(){
     result.push(...remainingVeggies.slice(0, need));
   }
 
-  // 7. 截断到目标数量
   if (result.length > targetMeatVeg) {
     result = result.slice(0, targetMeatVeg);
   }
 
-  // 8. 加入汤品（占用一个名额）
   if (includeSoup && soupItem) {
     result.push(soupItem);
   }
 
-  // 9. 打乱顺序并确保总数准确
   result = shuffle(result);
   result = result.slice(0, num);
 
@@ -960,10 +1165,10 @@ async function submitRandomOrder(){
   if(!currentRandomResult || currentRandomResult.length === 0) return;
   
   const totalCount = await getOrderCount();
+  const nextCount = totalCount + 1;
   
-  if (totalCount > 0 && totalCount % 10 === 0) {
-    const msg = `你们已经一起点了 ${totalCount} 顿饭啦！要继续好好吃饭，一直在一起哦 💕`;
-    showToast(msg, "🎉");
+  if (nextCount > 0 && nextCount % 10 === 0) {
+    showMilestoneModal(nextCount);
   } else {
     const q = selfConfirmQuotes[Math.floor(Math.random() * selfConfirmQuotes.length)];
     showToast(q);
@@ -1029,6 +1234,9 @@ window.submitRandomOrder = submitRandomOrder;
 window.uploadImage = uploadImage;
 window.hideModalToast = hideModalToast;
 window.closeNotifyModal = closeNotifyModal;
+window.closeMilestoneModal = closeMilestoneModal;
+window.showHistoryDetail = showHistoryDetail;
+window.closeHistoryDetail = closeHistoryDetail;
 window.saveName = saveName;
 
 window.onload = () => {
