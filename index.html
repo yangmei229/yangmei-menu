@@ -472,7 +472,6 @@ async function loadAllData(retryCount = 0) {
 // ============ 检查未读点单提醒（离线补偿） ============
 async function checkUnreadNotifications() {
   try {
-    // 查询最近一条未读，且点单人不是我（按昵称比对）的记录
     const { data: unreadData, error } = await supabaseClient
       .from('daily_menu')
       .select('*')
@@ -488,7 +487,6 @@ async function checkUnreadNotifications() {
       const randomMsg = partnerNotifyQuotes[Math.floor(Math.random() * partnerNotifyQuotes.length)];
       showNotifyModal(`${record.orderer} ${randomMsg}`, "Ta 在你不在的时候点了一份菜单～");
       
-      // 标记为已读
       await supabaseClient
         .from('daily_menu')
         .update({ is_read: true })
@@ -534,14 +532,11 @@ function initRealtime() {
 
         const newRecord = payload.new;
 
-        // 关键：如果点单人昵称和我一样，说明是我自己点的，不提醒自己
         if (newRecord.orderer === currentUserName) return;
 
-        // 对方点单，实时弹窗
         const randomMsg = partnerNotifyQuotes[Math.floor(Math.random() * partnerNotifyQuotes.length)];
         showNotifyModal(`${newRecord.orderer} ${randomMsg}`, "快去点餐台看看吧～");
         
-        // 实时提醒后，标记为已读（避免下次打开再弹）
         await supabaseClient
           .from('daily_menu')
           .update({ is_read: true })
@@ -880,11 +875,12 @@ async function renderHistoryList(){
   });
 }
 
-// ============ 随机点菜 ============
+// ============ 随机点菜（汤品计入总数，甜品/酒水不参与） ============
 function pickRandom(){
   const num = Number(document.getElementById("randNum").value);
   const wrap = document.getElementById("randResult");
   
+  // 1. 过滤掉甜品和酒水，只保留荤菜、素菜、汤品
   const eligible = recipes.filter(r => ['荤菜', '素菜', '汤品'].includes(r.cate));
   if(eligible.length === 0){ 
     wrap.innerHTML = `<p>没有可供随机的主菜，先去添加一些荤素菜吧～</p>`; 
@@ -898,37 +894,56 @@ function pickRandom(){
   const soups = eligible.filter(r => r.cate === '汤品');
   const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
-  let meatCount = Math.round(num * 2 / 3);
-  let vegCount = num - meatCount;
+  // 2. 决定是否加入汤品（约50%概率，且汤库不为空）
+  let includeSoup = false;
+  let soupItem = null;
+  if (soups.length > 0 && Math.random() > 0.5) {
+    includeSoup = true;
+    soupItem = soups[Math.floor(Math.random() * soups.length)];
+  }
 
+  // 3. 计算需要抽取的荤素数量（如果选了汤，就从总数里扣除1个名额）
+  const targetMeatVeg = includeSoup ? num - 1 : num;
+
+  let meatCount = Math.round(targetMeatVeg * 2 / 3);
+  let vegCount = targetMeatVeg - meatCount;
+
+  // 4. 抽取荤菜
   let result = [];
   let shuffledMeats = shuffle([...meats]);
-  let selectedMeats = shuffledMeats.slice(0, meatCount);
+  let selectedMeats = shuffledMeats.slice(0, Math.min(meatCount, meats.length));
   result.push(...selectedMeats);
-  
+
+  // 5. 抽取素菜
   let shuffledVeggies = shuffle([...veggies]);
-  let selectedVeggies = shuffledVeggies.slice(0, vegCount);
+  let selectedVeggies = shuffledVeggies.slice(0, Math.min(vegCount, veggies.length));
   result.push(...selectedVeggies);
 
-  if(result.length < num) {
+  // 6. 补齐数量
+  if(result.length < targetMeatVeg) {
     let remainingMeats = shuffledMeats.slice(selectedMeats.length);
-    if(remainingMeats.length >= (num - result.length)) {
-        result.push(...remainingMeats.slice(0, num - result.length));
-    } else {
-        result.push(...remainingMeats);
-        let remainingVeggies = shuffledVeggies.slice(selectedVeggies.length);
-        result.push(...remainingVeggies.slice(0, num - result.length));
-    }
-  } else if (result.length > num) {
-     result = result.slice(0, num);
+    let remainingVeggies = shuffledVeggies.slice(selectedVeggies.length);
+    let need = targetMeatVeg - result.length;
+    
+    result.push(...remainingMeats.slice(0, need));
+    need = targetMeatVeg - result.length;
+    result.push(...remainingVeggies.slice(0, need));
   }
 
-  if(soups.length > 0 && Math.random() > 0.5) {
-      const randomSoup = soups[Math.floor(Math.random() * soups.length)];
-      result.push(randomSoup);
+  // 7. 截断到目标数量
+  if (result.length > targetMeatVeg) {
+    result = result.slice(0, targetMeatVeg);
   }
 
+  // 8. 加入汤品（占用一个名额）
+  if (includeSoup && soupItem) {
+    result.push(soupItem);
+  }
+
+  // 9. 打乱顺序并确保总数准确
   result = shuffle(result);
+  result = result.slice(0, num);
+
   currentRandomResult = result;
 
   let html = `<div class="hand-border"><div class="text-lg heart-title mb-3">🎲 今日幸运菜单</div>`;
